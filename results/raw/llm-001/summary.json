@@ -1,0 +1,22 @@
+{
+ "model": "gpt-4.1-mini-2025-04-14",
+ "rows": 150,
+ "threshold": 0.5652,
+ "local_intent_accuracy": 0.56,
+ "llm_intent_accuracy": 0.46,
+ "local_action_accuracy": 0.32,
+ "llm_action_accuracy": 0.2933,
+ "gold_in_top5_share": 0.7467,
+ "fallbacks": 1,
+ "latency_ms_p50": 778.2,
+ "latency_ms_p95": 1199.4,
+ "prompt_tokens": 34594,
+ "completion_tokens": 149,
+ "cost_usd": 0.014076,
+ "price_basis": {
+  "input_per_m": 0.4,
+  "output_per_m": 1.6,
+  "source": "MODELS.md"
+ },
+ "adopt": false
+}
