@@ -1,0 +1,192 @@
+# Every run behind a number in this repository, failed ones included.
+# scripts/build_manifest.py turns this into results/manifest.json and fills in hashes and
+# grader metrics from the raw files.
+models:
+  serving:
+    name: "local linear classifiers (scikit-learn 1.9.1 LinearSVC, exported to numpy arrays)"
+    identifier: "models/ (version = first 16 hex of sha256 over model.npz, vocab.json, meta.json, confidence.json)"
+    api: false
+  experiment_only:
+    - name: gpt-4.1-mini-2025-04-14
+      provider: OpenAI API
+      role: "intent re-ranker on low-confidence rows (llm-001); not adopted, not in the service"
+      price_usd_per_million: {input: 0.40, output: 1.60}
+      price_source: "MODELS.md of the challenge repository (pinned Season 1 price, verified there 2026-09-06)"
+reference:
+  repository: Deployment-inc/Deployment.inc-Hiring-Problems
+  commit: d87699bb97de6504b33f681eed66918a4d433ba0
+  release: season-1-2026-09-07
+  grader: "reference/grader.py (version 2.1), unmodified"
+  file_hashes: reference/SHA256SUMS
+runs:
+  - run_id: baseline-001
+    date: "2026-11-17"
+    model: "published lexical baseline (reference/baseline.py)"
+    status: completed
+    raw_path: results/raw/baseline-001/predictions.jsonl
+    description: "Published baseline rerun unchanged; matches the published numbers."
+  - run_id: hostile-shell-001
+    date: "2026-11-17"
+    model: "no model (fixed-answer stand-in)"
+    status: completed
+    input: hostile.jsonl
+    raw_path: results/raw/hostile-shell-001/pytest.txt
+    description: "Hostile tests against the input handling before any model existed. First attempt did not start (Starlette API change); fixed; 95 passed."
+  - run_id: ablate-001-w
+    date: "2026-11-17"
+    seed: 20261117
+    model: "LinearSVC, words"
+    status: completed
+    raw_path: results/raw/ablate-001-w/predictions.jsonl
+    config: {blocks: w, augment: false, policy_mode: follow_label, confidence: placeholder}
+    description: "Feature ablation step 1."
+  - run_id: ablate-001-wc
+    date: "2026-11-17"
+    seed: 20261117
+    model: "LinearSVC, words + characters"
+    status: completed
+    raw_path: results/raw/ablate-001-wc/predictions.jsonl
+    config: {blocks: wc, augment: false, policy_mode: follow_label, confidence: placeholder}
+    description: "Feature ablation step 2. Characters lowered action accuracy and widened the noisy gap."
+  - run_id: ablate-001-wcs
+    date: "2026-11-17"
+    seed: 20261117
+    model: "LinearSVC, + speaker/position"
+    status: completed
+    raw_path: results/raw/ablate-001-wcs/predictions.jsonl
+    config: {blocks: wcs, augment: false, policy_mode: follow_label, confidence: placeholder}
+    description: "Feature ablation step 3."
+  - run_id: ablate-001-wcsx
+    date: "2026-11-17"
+    seed: 20261117
+    model: "LinearSVC, + procedure state"
+    status: completed
+    raw_path: results/raw/ablate-001-wcsx/predictions.jsonl
+    config: {blocks: wcsx, augment: false, policy_mode: follow_label, confidence: placeholder}
+    description: "Feature ablation step 4."
+  - run_id: train-001
+    date: "2026-11-17"
+    seed: 20261117
+    model: "LinearSVC, all blocks, augmented"
+    status: failed
+    input: train.jsonl.gz
+    raw_path: results/raw/train-001-failed.log
+    description: "Crashed in the out-of-fold step: liblinear access violation in a joblib worker process. Nothing written."
+  - run_id: train-002
+    date: "2026-11-17"
+    seed: 20261117
+    model: "LinearSVC, all blocks, augmented"
+    status: completed
+    input: train.jsonl.gz
+    raw_path: results/raw/train-002/train.log
+    description: "Shipped model. Fold fits moved to threads. Out-of-fold report in oof_report.json."
+  - run_id: dev-002
+    date: "2026-11-17"
+    seed: 20261117
+    model: "train-002"
+    status: completed
+    raw_path: results/raw/dev-002/predictions.jsonl
+    config: {policy_mode: route_to_human}
+    description: "Shipped model, policy followed, conflicts routed to a person."
+  - run_id: dev-002-follow
+    date: "2026-11-17"
+    seed: 20261117
+    model: "train-002"
+    status: completed
+    raw_path: results/raw/dev-002-follow/predictions.jsonl
+    config: {policy_mode: follow_label}
+    description: "Same model, returns the label even when the procedure does not permit it."
+  - run_id: dev-002-noti
+    date: "2026-11-17"
+    seed: 20261117
+    model: "train-002"
+    status: completed
+    raw_path: results/raw/dev-002-noti/predictions.jsonl
+    config: {policy_mode: route_to_human, turn_index: "removed from every request"}
+    description: "Reliance on the optional turn_index field."
+  - run_id: dev-003
+    date: "2026-11-17"
+    seed: 20261117
+    model: "train-002"
+    status: completed
+    raw_path: results/raw/dev-003/predictions.jsonl
+    description: "After the injection tripwire change. Same metrics as dev-002."
+  - run_id: hostile-002
+    date: "2026-11-17"
+    model: "train-002"
+    status: completed
+    input: hostile.jsonl
+    raw_path: results/raw/hostile-002/hostile_results.jsonl
+    description: "Hostile pack over HTTP after the spoofed-system-text fix. 99 of 99 passed, but hostile-004 kept 0.99 confidence (fixed before dev-004)."
+  - run_id: dev-003-http
+    date: "2026-11-17"
+    seed: 20261117
+    model: "train-002"
+    status: completed
+    raw_path: results/raw/dev-003-http/predictions.jsonl
+    description: "dev-003 through the HTTP service; identical to in-process."
+  - run_id: llm-001
+    date: "2026-11-17"
+    model: gpt-4.1-mini-2025-04-14
+    status: completed
+    raw_path: results/raw/llm-001/calls.jsonl
+    api_calls: 150
+    input_tokens: 34594
+    output_tokens: 149
+    cost_usd: 0.014076
+    config: {rows: "first 150 dev+noisy rows below the confidence threshold", top_k: 5, temperature: 0}
+    description: "LLM intent re-ranking. Made intent worse (0.56 to 0.46). Not adopted."
+  - run_id: ablate-002-w-nocap
+    date: "2026-11-17"
+    seed: 20261117
+    model: "LinearSVC, words, no per-turn length cap"
+    status: completed
+    raw_path: results/raw/ablate-002-w-nocap/predictions.jsonl
+    config: {blocks: w, augment: false, policy_mode: follow_label, turn_token_cap: "off"}
+    description: "Isolates the per-turn length cap. Compare with ablate-001-w."
+  - run_id: dev-004
+    date: "2026-11-17"
+    seed: 20261117
+    model: "train-002 + little_context cap"
+    status: completed
+    raw_path: results/raw/dev-004/predictions.jsonl
+    description: "After capping confidence when no agent turn is present."
+  - run_id: dev-005-http
+    date: "2026-11-17"
+    seed: 20261117
+    model: "train-002 (version 54c65d7534fd5fb3), policy 2026-11-17.1"
+    status: completed
+    raw_path: results/raw/dev-005-http/predictions.jsonl
+    submitted: true
+    description: "Submitted development run, through the HTTP service. Source of results/dev_predictions.jsonl and noisy_predictions.jsonl."
+  - run_id: hostile-003
+    date: "2026-11-17"
+    model: "train-002 (version 54c65d7534fd5fb3)"
+    status: completed
+    input: hostile.jsonl
+    raw_path: results/raw/hostile-003/hostile_results.jsonl
+    description: "Submitted hostile run over HTTP: 9 published, 68 extended, 22 transport probes. 99 of 99 passed."
+  - run_id: bench-win-c8
+    date: "2026-11-17"
+    model: "train-002 (version 05fd2fd6e25a62b2)"
+    status: completed
+    raw_path: results/raw/bench-win-c8.json
+    description: "First load test on the Windows laptop, concurrency 8."
+  - run_id: bench-win-c32
+    date: "2026-11-17"
+    model: "train-002 (version 05fd2fd6e25a62b2)"
+    status: completed
+    raw_path: results/raw/bench-win-c32.json
+    description: "First load test on the Windows laptop, concurrency 32."
+  - run_id: bench-win2-c8
+    date: "2026-11-17"
+    model: "train-002 (version 54c65d7534fd5fb3)"
+    status: completed
+    raw_path: results/raw/bench-win2-c8.json
+    description: "Final-version load test on the Windows laptop, concurrency 8."
+  - run_id: bench-win2-c32
+    date: "2026-11-17"
+    model: "train-002 (version 54c65d7534fd5fb3)"
+    status: completed
+    raw_path: results/raw/bench-win2-c32.json
+    description: "Final-version load test on the Windows laptop, concurrency 32."
