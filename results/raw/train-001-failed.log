@@ -1,0 +1,46 @@
+Windows fatal exception: access violation
+
+Current thread 0x000031d8 (most recent call first):
+  File "D:\deployment\.venv\Lib\site-packages\sklearn\svm\_base.py", line 1275 in _fit_liblinear
+  File "D:\deployment\.venv\Lib\site-packages\sklearn\svm\_classes.py", line 330 in fit
+  File "D:\deployment\.venv\Lib\site-packages\sklearn\base.py", line 1403 in wrapper
+  File "D:\deployment\src\triage\train.py", line 138 in fit_head
+  File "D:\deployment\src\triage\train.py", line 144 in _fold_job
+  File "D:\deployment\.venv\Lib\site-packages\joblib\parallel.py", line 607 in __call__
+  File "D:\deployment\.venv\Lib\site-packages\joblib\externals\loky\process_executor.py", line 291 in __call__
+  File "D:\deployment\.venv\Lib\site-packages\joblib\externals\loky\process_executor.py", line 490 in _process_worker
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\process.py", line 108 in run
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\process.py", line 314 in _bootstrap
+  File "D:\deployment\.venv\Lib\site-packages\joblib\externals\loky\backend\popen_loky_win32.py", line 172 in main
+  File "<string>", line 1 in <module>
+ERROR: The process "25348" not found.
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "D:\deployment\src\triage\train.py", line 303, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "D:\deployment\src\triage\train.py", line 213, in main
+    results = Parallel(n_jobs=args.jobs)(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\deployment\.venv\Lib\site-packages\joblib\parallel.py", line 2098, in __call__
+    return output if self.return_generator else list(output)
+                                                ^^^^^^^^^^^^
+  File "D:\deployment\.venv\Lib\site-packages\joblib\parallel.py", line 1704, in _get_outputs
+    yield from self._retrieve()
+  File "D:\deployment\.venv\Lib\site-packages\joblib\parallel.py", line 1806, in _retrieve
+    self._raise_error_fast()
+  File "D:\deployment\.venv\Lib\site-packages\joblib\parallel.py", line 1885, in _raise_error_fast
+    error_job.get_result(self.timeout)
+  File "D:\deployment\.venv\Lib\site-packages\joblib\parallel.py", line 780, in get_result
+    return self._return_or_raise()
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\deployment\.venv\Lib\site-packages\joblib\parallel.py", line 795, in _return_or_raise
+    raise self._result
+joblib.externals.loky.process_executor.TerminatedWorkerError: A worker process managed by the executor was unexpectedly terminated. This could be caused by a segmentation fault while calling the function or by an excessive memory usage causing the Operating System to kill the worker.
+
+Detailed tracebacks of the workers should have been printed to stderr in the executor process if faulthandler was not disabled.
+rows 23962 (base 20000) features 93441 [173s]
+fitted intent (96 classes) [320s]
+fitted flow (10 classes) [345s]
+fitted action (30 classes) [383s]

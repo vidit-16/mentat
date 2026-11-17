@@ -114,7 +114,8 @@ def main() -> int:
                       if (RESULTS / name).exists()},
         "runs": runs,
     }
-    (RESULTS / "manifest.json").write_text(json.dumps(manifest, indent=1) + "\n", encoding="utf-8")
+    (RESULTS / "manifest.json").write_text(json.dumps(manifest, indent=1) + "\n", encoding="utf-8",
+                                           newline="\n")
     print(json.dumps({"claimed": claimed, "runs": len(runs), "spend_usd": spend}, indent=1))
     return 0
 

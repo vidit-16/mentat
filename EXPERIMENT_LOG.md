@@ -329,3 +329,12 @@ This is the submitted run. Its artifact is in `results/raw/ci-44135706221/`; the
 run's artifact is in `results/raw/ci-44134811498-failed/`. At concurrency 8 the client, not
 the server, is the bottleneck (throughput rises 3.5 times at 32 while p95 barely moves), so
 the concurrency 8 figure is an upper bound on server latency at that load.
+
+## 2026-11-17 — Raw logs were missing from the repository
+
+While checking every hash in `results/manifest.json` against the committed bytes, two run
+logs (`train-001-failed.log`, `train-002/train.log`) turned out not to be in git at all: the
+`.gitignore` rule `*.log` had silently excluded them, along with the service logs. The
+manifest listed them, so a reviewer would have found missing evidence, including the failed
+run. Added an exception for `results/raw/`, committed the five logs, and the manifest
+writer now uses LF so its hashes match what git stores. All 29 listed hashes match HEAD.
