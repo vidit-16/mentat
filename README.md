@@ -11,7 +11,8 @@ support manager edits, and a separate confidence model.
 ## Results on the published development data
 
 Measured by the unmodified official `grader.py` on 2,000 clean + 300 noisy + 9 hostile rows,
-through the HTTP service [run `dev-005-http`]. These are development numbers; the hidden
+through the HTTP service, by `scripts/reproduce.sh all` on a clean GitHub Actions Ubuntu VM
+[run `ci-44135706221`]. The laptop gives identical predictions [run `dev-005-http`]. These are development numbers; the hidden
 test split is scored by the reviewers.
 
 | | Shipped | Bar | Published baseline |
@@ -26,13 +27,15 @@ test split is scored by the reviewers.
 | Sent to a person | 15.6% | — | — |
 | Action accuracy when not sent to a person | 0.9042 | — | — |
 | Hostile pack (99 requests: 9 published, 68 extended, 22 transport) | 99 passed | zero failures | — |
-| p95 latency, concurrency 8 | see `results/latency_bench.json` | reported | — |
+| p95 latency, concurrency 8 / 32 | 44 ms / 55 ms | reported | — |
 | API cost per message | $0 | reported | $0 |
 
-Latency: on the development laptop (i5-10210U, 2 workers, client on the same machine) p95 is
-63 ms at concurrency 8 and 302 ms at concurrency 32, no errors. The clean-Linux numbers from
-the CI run are in `results/latency_bench.json` once that run has been recorded there.
-Compute cost at a cloud list price is about $0.0001 per thousand messages.
+Latency is measured by the client, under load, on the clean CI machine (2 vCPU, 2 workers,
+load generator on the same machine, 3,000 requests mixing every dev, noisy and hostile row):
+p95 44 ms at concurrency 8 (186 requests/s) and 55 ms at concurrency 32 (652 requests/s), no
+errors (`results/latency_bench.json`). On the 4-core development laptop the same test gave
+p95 63 ms and 302 ms; laptop timings varied by about 40% between runs. Compute cost at the
+list price of a 2-vCPU cloud VM ($0.089/hour) is about $0.0001 per thousand messages.
 
 ## How it works
 

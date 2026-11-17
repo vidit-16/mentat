@@ -311,3 +311,21 @@ differed from the laptop's (`54c65d7534fd5fb3`). Training on Windows wrote the J
 files with CRLF line ends; git stores them with LF; the version is a hash of the files.
 Training now writes LF on every platform, and the laptop checkout uses LF, so both report
 `2de59e320f72ca21`. Weights and predictions were never affected; only the version label.
+
+## 2026-11-17 — Clean-Linux run passes (GitHub Actions run 44135706221, commit e212761)
+
+`ubuntu-24.04`, 2 vCPU, 7.8 GiB, system Python 3.12.3, no secrets. `scripts/reproduce.sh all`:
+
+- setup and reference hash check: OK
+- tests: 117 passed
+- evaluation through HTTP: intent 0.7204, action 0.8217, macro-F1 0.6895, gap 0.0327,
+  schema 100%, violations 0.0778, top-70 ratio 0.2821; identical to the laptop
+- hostile pack: 99 of 99 passed, slowest 39 ms
+- load, 2 workers, 3,000 requests each: concurrency 8 p95 44.1 ms at 186 requests/s;
+  concurrency 32 p95 54.8 ms at 652 requests/s; 0 errors
+- the workflow's own check: CI accuracy within 0.002 of the committed numbers: passed
+
+This is the submitted run. Its artifact is in `results/raw/ci-44135706221/`; the failed first
+run's artifact is in `results/raw/ci-44134811498-failed/`. At concurrency 8 the client, not
+the server, is the bottleneck (throughput rises 3.5 times at 32 while p95 barely moves), so
+the concurrency 8 figure is an upper bound on server latency at that load.

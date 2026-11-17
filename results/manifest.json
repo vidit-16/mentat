@@ -7,10 +7,10 @@
   "noisy_accuracy": 0.7933,
   "schema_valid_pct": 100.0,
   "top70_error_ratio": 0.2821,
-  "cost_per_message_usd": 1.16e-07,
-  "latency_p95_s": 0.0627
+  "cost_per_message_usd": 1.33e-07,
+  "latency_p95_s": 0.0441
  },
- "submitted_run": "dev-005-http",
+ "submitted_run": "ci-44135706221",
  "spend": {
   "results_usd": 0.014076,
   "compute_usd": 0,
@@ -45,19 +45,19 @@
  "artifacts": {
   "dev_predictions.jsonl": {
    "path": "results/dev_predictions.jsonl",
-   "sha256": "98d9f747a26e70d46ee870dd45aebf769dd9e9311ea983a7f4a7c1b5b36518d1"
+   "sha256": "929331fcae15a311357b3db465cebff7cde548a2bb29a480a92a8a3c822ce25a"
   },
   "noisy_predictions.jsonl": {
    "path": "results/noisy_predictions.jsonl",
-   "sha256": "ff0c708624e074e5ba6a6cca5e850eef874103f2058ee7e89a7c60f2b8de2f04"
+   "sha256": "86bc8dec9ded6f2fc99e09d47332d56f956fa9e03d627853fa5b05e103d79b43"
   },
   "hostile_results.jsonl": {
    "path": "results/hostile_results.jsonl",
-   "sha256": "76fcc7eee09402965382005be27a64968a1ea1e5bdb07be4e8e2d6cbbf38073a"
+   "sha256": "da8cc56c543ac09750809032b49be775a3e312247bbae18b153b8e6bbf28de2a"
   },
   "latency_bench.json": {
    "path": "results/latency_bench.json",
-   "sha256": "d3af574da6147d9ac53ca5784ca3b9dedd59fd1e8b870d30910110fc9f1d3e08"
+   "sha256": "8ec719ab2b0e54337253d371f26f809d9ce747ad4ca0ee6ef4f66bb453b6194b"
   }
  },
  "runs": [
@@ -522,7 +522,7 @@
    "input_sha256": "0d6502b4bac26bb23fe9108d3933fb1f734410d2540dada00207a8f2ca1e1331",
    "raw_path": "results/raw/dev-005-http/predictions.jsonl",
    "raw_sha256": "c4d2f161979a4e0615cc4013863ba9bfbc3ee45b64c8e5ffe2096d6709bf49f8",
-   "description": "Submitted development run, through the HTTP service. Source of results/dev_predictions.jsonl and noisy_predictions.jsonl.",
+   "description": "Final-version development run on the laptop, through the HTTP service. Same predictions as the CI run below.",
    "config": {},
    "api_calls": 0,
    "input_tokens": 0,
@@ -620,6 +620,54 @@
    "input_tokens": 0,
    "output_tokens": 0,
    "cost_usd": 0.0
+  },
+  {
+   "run_id": "ci-44134811498",
+   "date": "2026-11-17",
+   "seed": null,
+   "model": "train-002 (version 2de59e320f72ca21)",
+   "status": "failed",
+   "input_sha256": "460209c96047f89231fc0b8a56786563eb8fbcf514331e09ec54f9a3ec2e2d1d",
+   "raw_path": "results/raw/ci-44134811498-failed/hostile_results.jsonl",
+   "raw_sha256": "cbb62b786d457c500e66a75d6373ba3cc9074713cabea4d606aff2705067841e",
+   "description": "First clean-Linux run (GitHub Actions, ubuntu-24.04). Tests and evaluation passed; hostile step failed 90 of 99 because reproduce.sh started a new server before the old one had exited. Script bug, fixed in e212761.",
+   "config": {},
+   "api_calls": 0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  },
+  {
+   "run_id": "ci-44135706221",
+   "date": "2026-11-17",
+   "seed": null,
+   "model": "train-002 (version 2de59e320f72ca21), policy 2026-11-17.1",
+   "status": "completed",
+   "input_sha256": "0d6502b4bac26bb23fe9108d3933fb1f734410d2540dada00207a8f2ca1e1331",
+   "raw_path": "results/raw/ci-44135706221/raw/eval-20261117T172010Z/predictions.jsonl",
+   "raw_sha256": "811c427c1f26dd9a61fa49355bb45599a96e86843afc9b71b937f7c412d25dfc",
+   "description": "Submitted run: scripts/reproduce.sh all on a clean Linux VM. 117 tests passed; evaluation through HTTP; hostile 99 of 99; load test at concurrency 8 and 32. Source of results/dev_predictions.jsonl, noisy_predictions.jsonl, hostile_results.jsonl and latency_bench.json.",
+   "config": {
+    "machine": "GitHub Actions ubuntu-24.04, 2 vCPU, 7.8 GiB, Python 3.12.3",
+    "commit": "e2127613a5cf51b54580d65773c6749e7127f006",
+    "workers": 2
+   },
+   "api_calls": 0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0,
+   "metrics": {
+    "intent_accuracy": 0.7204,
+    "macro_f1": 0.6895,
+    "action_accuracy": 0.8217,
+    "noisy_accuracy": 0.7933,
+    "noisy_gap": 0.0327,
+    "schema_valid_pct": 100.0,
+    "top70_error_ratio": 0.2821,
+    "policy_violation_rate": 0.0778,
+    "gold_policy_violation_rate": 0.0883,
+    "grader_version": "2.1"
+   }
   }
  ]
 }

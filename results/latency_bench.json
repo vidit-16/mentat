@@ -9,7 +9,7 @@
  },
  "runs": [
   {
-   "label": "c8-windows-laptop",
+   "label": "c8",
    "url_host": "127.0.0.1:8000",
    "concurrency": 8,
    "requests_measured": 3000,
@@ -18,22 +18,22 @@
    "non_200": 0,
    "errors": 0,
    "latency_ms": {
-    "p50": 35.64,
-    "p95": 62.7,
-    "p99": 85.86,
-    "max": 145.19,
-    "mean": 37.3
+    "p50": 42.98,
+    "p95": 44.08,
+    "p99": 45.97,
+    "max": 50.91,
+    "mean": 42.89
    },
-   "throughput_rps": 213.1,
-   "wall_seconds": 14.55,
+   "throughput_rps": 186.4,
+   "wall_seconds": 16.63,
    "client": {
-    "python": "3.12.10",
-    "os": "Windows-11-10.0.26200-SP0",
-    "cpu": "Intel(R) Core(TM) i5-10210U CPU @ 1.60GHz",
-    "logical_cpus": 8
+    "python": "3.12.3",
+    "os": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+    "cpu": "AMD EPYC 7763 64-Core Processor",
+    "logical_cpus": 2
    },
    "measured_by": "client-side wall clock per request (time.perf_counter)",
-   "raw_path": "results/raw/bench-win2-c8.json",
+   "raw_path": "ci-results/raw/bench-c8.json",
    "request_ids": [
     "1194-25",
     "567-17",
@@ -87,10 +87,10 @@
     "10251-21-noisy",
     "..."
    ],
-   "compute_usd_per_1000_messages_at_this_throughput": 0.000116
+   "compute_usd_per_1000_messages_at_this_throughput": 0.000133
   },
   {
-   "label": "c32-windows-laptop",
+   "label": "c32",
    "url_host": "127.0.0.1:8000",
    "concurrency": 32,
    "requests_measured": 3000,
@@ -99,22 +99,22 @@
    "non_200": 0,
    "errors": 0,
    "latency_ms": {
-    "p50": 147.55,
-    "p95": 301.84,
-    "p99": 413.3,
-    "max": 495.55,
-    "mean": 139.63
+    "p50": 47.98,
+    "p95": 54.83,
+    "p99": 57.96,
+    "max": 64.82,
+    "mean": 48.48
    },
-   "throughput_rps": 228.6,
-   "wall_seconds": 13.56,
+   "throughput_rps": 652.2,
+   "wall_seconds": 4.75,
    "client": {
-    "python": "3.12.10",
-    "os": "Windows-11-10.0.26200-SP0",
-    "cpu": "Intel(R) Core(TM) i5-10210U CPU @ 1.60GHz",
-    "logical_cpus": 8
+    "python": "3.12.3",
+    "os": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+    "cpu": "AMD EPYC 7763 64-Core Processor",
+    "logical_cpus": 2
    },
    "measured_by": "client-side wall clock per request (time.perf_counter)",
-   "raw_path": "results/raw/bench-win2-c32.json",
+   "raw_path": "ci-results/raw/bench-c32.json",
    "request_ids": [
     "1194-25",
     "567-17",
@@ -168,7 +168,7 @@
     "10251-21-noisy",
     "..."
    ],
-   "compute_usd_per_1000_messages_at_this_throughput": 0.000108
+   "compute_usd_per_1000_messages_at_this_throughput": 3.8e-05
   }
  ]
 }

@@ -157,8 +157,7 @@ runs:
     model: "train-002 (version 54c65d7534fd5fb3), policy 2026-11-17.1"
     status: completed
     raw_path: results/raw/dev-005-http/predictions.jsonl
-    submitted: true
-    description: "Submitted development run, through the HTTP service. Source of results/dev_predictions.jsonl and noisy_predictions.jsonl."
+    description: "Final-version development run on the laptop, through the HTTP service. Same predictions as the CI run below."
   - run_id: hostile-003
     date: "2026-11-17"
     model: "train-002 (version 54c65d7534fd5fb3)"
@@ -190,3 +189,18 @@ runs:
     status: completed
     raw_path: results/raw/bench-win2-c32.json
     description: "Final-version load test on the Windows laptop, concurrency 32."
+  - run_id: ci-44134811498
+    date: "2026-11-17"
+    model: "train-002 (version 2de59e320f72ca21)"
+    status: failed
+    input: hostile.jsonl
+    raw_path: results/raw/ci-44134811498-failed/hostile_results.jsonl
+    description: "First clean-Linux run (GitHub Actions, ubuntu-24.04). Tests and evaluation passed; hostile step failed 90 of 99 because reproduce.sh started a new server before the old one had exited. Script bug, fixed in e212761."
+  - run_id: ci-44135706221
+    date: "2026-11-17"
+    model: "train-002 (version 2de59e320f72ca21), policy 2026-11-17.1"
+    status: completed
+    raw_path: results/raw/ci-44135706221/raw/eval-20261117T172010Z/predictions.jsonl
+    submitted: true
+    config: {machine: "GitHub Actions ubuntu-24.04, 2 vCPU, 7.8 GiB, Python 3.12.3", commit: e2127613a5cf51b54580d65773c6749e7127f006, workers: 2}
+    description: "Submitted run: scripts/reproduce.sh all on a clean Linux VM. 117 tests passed; evaluation through HTTP; hostile 99 of 99; load test at concurrency 8 and 32. Source of results/dev_predictions.jsonl, noisy_predictions.jsonl, hostile_results.jsonl and latency_bench.json."
