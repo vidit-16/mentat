@@ -1,0 +1,317 @@
+# Policy table for the triage service.
+#
+# This file decides what the service is allowed to answer. The classifier proposes; this
+# table disposes. Edit it, run `scripts/reproduce.sh policy-check`, restart the service.
+#
+# version          shown in every response and every log line. Change it with every edit.
+# on_conflict      route_to_human: never return an action the flow does not permit; return
+#                    the best permitted one and send the message to a person.
+#                  follow_label: return what agents usually did, even when the written
+#                    procedure does not list it. Kept for measurement only.
+# aliases          label name -> name used in the written procedure, where they differ.
+# high_consequence actions that move money or change an account. With require_system_turn
+#                  they are only returned when the conversation shows at least one system
+#                  step (an `action` turn), which a customer cannot write.
+# flows            for each flow: the intents that belong to it and the permitted actions.
+
+version: "2026-11-17.1"
+on_conflict: route_to_human
+
+aliases:
+  membership: membership-privileges
+
+high_consequence:
+  require_system_turn: true
+  actions:
+    - offer-refund
+    - promo-code
+    - make-purchase
+    - update-order
+    - update-account
+    - make-password
+
+flows:
+  account_access:
+    intents:
+      - recover_password
+      - recover_username
+      - reset_2fa
+    permitted:
+      - enter-details
+      - make-password
+      - n-a
+      - pull-up-account
+      - send-link
+      - verify-identity
+  manage_account:
+    intents:
+      - manage_change_address
+      - manage_change_name
+      - manage_change_phone
+      - manage_payment_method
+      - status_credit_missing
+      - status_service_added
+      - status_service_removed
+      - status_shipping_question
+    permitted:
+      - ask-the-oracle
+      - n-a
+      - offer-refund
+      - promo-code
+      - pull-up-account
+      - record-reason
+      - search-boots
+      - search-faq
+      - search-jacket
+      - search-jeans
+      - search-membership
+      - search-policy
+      - search-pricing
+      - search-shirt
+      - search-timing
+      - select-faq
+      - send-link
+      - update-account
+      - verify-identity
+  order_issue:
+    intents:
+      - manage_cancel
+      - manage_create
+      - manage_downgrade
+      - manage_upgrade
+      - status_delivery_date
+      - status_delivery_time
+      - status_mystery_fee
+      - status_payment_method
+      - status_quantity
+    permitted:
+      - ask-the-oracle
+      - make-purchase
+      - membership-privileges
+      - offer-refund
+      - pull-up-account
+      - search-boots
+      - search-faq
+      - search-jacket
+      - search-jeans
+      - search-membership
+      - search-policy
+      - search-pricing
+      - search-shirt
+      - search-timing
+      - select-faq
+      - shipping-status
+      - update-order
+      - verify-identity
+  product_defect:
+    intents:
+      - refund_initiate
+      - refund_status
+      - refund_update
+      - return_color
+      - return_size
+      - return_stain
+    permitted:
+      - end-conversation
+      - enter-details
+      - membership-privileges
+      - n-a
+      - notify-internal-team
+      - notify-team
+      - offer-refund
+      - pull-up-account
+      - record-reason
+      - update-order
+      - validate-purchase
+  purchase_dispute:
+    intents:
+      - bad_price_competitor
+      - bad_price_yesterday
+      - mistimed_billing_already_returned
+      - mistimed_billing_never_bought
+      - out_of_stock_general
+      - out_of_stock_one_item
+      - promo_code_invalid
+      - promo_code_out_of_date
+    permitted:
+      - ask-the-oracle
+      - make-purchase
+      - membership-privileges
+      - n-a
+      - notify-internal-team
+      - notify-team
+      - promo-code
+      - pull-up-account
+      - record-reason
+      - search-boots
+      - search-faq
+      - search-jacket
+      - search-jeans
+      - search-membership
+      - search-policy
+      - search-pricing
+      - search-shirt
+      - search-timing
+      - select-faq
+      - update-order
+      - validate-purchase
+      - verify-identity
+  shipping_issue:
+    intents:
+      - cost
+      - manage
+      - missing
+      - status
+    permitted:
+      - ask-the-oracle
+      - make-purchase
+      - n-a
+      - offer-refund
+      - pull-up-account
+      - record-reason
+      - search-boots
+      - search-faq
+      - search-jacket
+      - search-jeans
+      - search-membership
+      - search-policy
+      - search-pricing
+      - search-shirt
+      - search-timing
+      - select-faq
+      - shipping-status
+      - update-order
+      - validate-purchase
+      - verify-identity
+  single_item_query:
+    intents:
+      - boots_how_1
+      - boots_how_2
+      - boots_how_3
+      - boots_how_4
+      - boots_other_1
+      - boots_other_2
+      - boots_other_3
+      - boots_other_4
+      - jacket_how_1
+      - jacket_how_2
+      - jacket_how_3
+      - jacket_how_4
+      - jacket_other_1
+      - jacket_other_2
+      - jacket_other_3
+      - jacket_other_4
+      - jeans_how_1
+      - jeans_how_2
+      - jeans_how_3
+      - jeans_how_4
+      - jeans_other_1
+      - jeans_other_2
+      - jeans_other_3
+      - jeans_other_4
+      - shirt_how_1
+      - shirt_how_2
+      - shirt_how_3
+      - shirt_how_4
+      - shirt_other_1
+      - shirt_other_2
+      - shirt_other_3
+      - shirt_other_4
+    permitted:
+      - ask-the-oracle
+      - boots
+      - jacket
+      - jeans
+      - n-a
+      - search-boots
+      - search-faq
+      - search-jacket
+      - search-jeans
+      - search-membership
+      - search-policy
+      - search-pricing
+      - search-shirt
+      - search-timing
+      - select-answer
+      - select-faq
+      - shirt
+  storewide_query:
+    intents:
+      - membership_1
+      - membership_2
+      - membership_3
+      - membership_4
+      - policy_1
+      - policy_2
+      - policy_3
+      - policy_4
+      - pricing_1
+      - pricing_2
+      - pricing_3
+      - pricing_4
+      - timing_1
+      - timing_2
+      - timing_3
+      - timing_4
+    permitted:
+      - ask-the-oracle
+      - membership
+      - n-a
+      - policy
+      - pricing
+      - search-boots
+      - search-faq
+      - search-jacket
+      - search-jeans
+      - search-membership
+      - search-policy
+      - search-pricing
+      - search-shirt
+      - search-timing
+      - select-answer
+      - select-faq
+      - timing
+  subscription_inquiry:
+    intents:
+      - manage_dispute_bill
+      - manage_extension
+      - manage_pay_bill
+      - status_due_amount
+      - status_due_date
+      - status_questions
+    permitted:
+      - ask-the-oracle
+      - enter-detail
+      - enter-details
+      - membership-privileges
+      - n-a
+      - offer-refund
+      - pull-up-account
+      - search-boots
+      - search-faq
+      - search-jacket
+      - search-jeans
+      - search-membership
+      - search-policy
+      - search-pricing
+      - search-shirt
+      - search-timing
+      - select-faq
+      - send-link
+      - subscription-status
+      - update-account
+      - verify-identity
+  troubleshoot_site:
+    intents:
+      - credit_card
+      - search_results
+      - shopping_cart
+      - slow_speed
+    permitted:
+      - enter-details
+      - instructions
+      - log-out-in
+      - make-purchase
+      - notify-internal-team
+      - notify-team
+      - try-again
