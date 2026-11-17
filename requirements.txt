@@ -1,0 +1,14 @@
+# Service (what POST /triage needs at run time)
+numpy==2.5.5
+scipy==1.18.1
+PyYAML==6.0.3
+starlette==1.10.0
+uvicorn==0.54.0
+# Training only (never imported by the service)
+scikit-learn==1.9.1
+joblib==1.6.0
+threadpoolctl==3.8.0
+# Tests and load generation
+pytest==9.2.0
+hypothesis==6.170.15
+httpx==0.28.1
