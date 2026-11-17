@@ -285,3 +285,29 @@ laptop timings vary by about 40% from run to run, which is one more reason the C
 on a clean machine are the ones to quote.
 
 API spend for everything in `results/`: **$0.014076** (the LLM experiment only).
+
+## 2026-11-17 — First clean-Linux run in CI (GitHub Actions run 44134811498, failed)
+
+Fresh `ubuntu-24.04`, system Python 3.12.3, `scripts/reproduce.sh all`. Setup, hash check and
+all 117 tests passed. Evaluation through the HTTP service reproduced the committed dev
+numbers exactly (intent 0.7204, action 0.8217, top-70 ratio 0.2821). Then the hostile step
+failed: the nine published rows passed, and all 90 requests after them failed with
+connection errors.
+
+**Cause: a bug in `reproduce.sh`, not in the service.** `stop` sent the shutdown signal to the
+evaluation step's server and returned at once. The hostile step's `start` launched a new
+server, which died with `Address already in use`; but the old server, still draining, answered
+`/healthz`, so the script took it as ready. It then finished shutting down during the run.
+The service log in the CI artifact shows both.
+
+Fix: `stop` waits for the process to exit and the port to be free; `start` refuses to start
+when the port is already in use, and only reports ready while its own process is alive. The
+same mistake would bite anyone restarting the service in production with a health check that
+does not know which process answered, so RUNBOOK.md now says to stop and wait before
+starting.
+
+Second finding from the same run: the model version reported on Linux (`2de59e320f72ca21`)
+differed from the laptop's (`54c65d7534fd5fb3`). Training on Windows wrote the JSON model
+files with CRLF line ends; git stores them with LF; the version is a hash of the files.
+Training now writes LF on every platform, and the laptop checkout uses LF, so both report
+`2de59e320f72ca21`. Weights and predictions were never affected; only the version label.

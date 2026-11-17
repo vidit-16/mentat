@@ -69,16 +69,22 @@ serve() {
   exec env PORT="$PORT" WORKERS="$WORKERS" "$PY" -m triage.serve
 }
 
-wait_ready() {
-  for _ in $(seq 1 120); do
-    if "$PY" - "$URL" <<'EOF' 2>/dev/null; then return 0; fi
+healthy() {
+  "$PY" - "$URL" <<'EOF' 2>/dev/null
 import sys, urllib.request
 urllib.request.urlopen(sys.argv[1] + "/healthz", timeout=2).read()
 EOF
-    sleep 1
-  done
-  echo "service did not become ready on $URL" >&2
-  return 1
+}
+
+port_busy() {
+  "$PY" - "$PORT" <<'EOF' 2>/dev/null
+import socket, sys
+s = socket.socket()
+try:
+    s.connect(("127.0.0.1", int(sys.argv[1])))
+except OSError:
+    sys.exit(1)
+EOF
 }
 
 start() {
@@ -86,19 +92,45 @@ start() {
   if [ -f "$PIDFILE" ] && kill -0 "$(cat "$PIDFILE")" 2>/dev/null; then
     echo "service already running (pid $(cat "$PIDFILE"))"; return 0
   fi
+  # Something else on the port would answer /healthz and be mistaken for this service.
+  if port_busy; then
+    echo "port $PORT is already in use by another process; stop it or set PORT" >&2
+    return 1
+  fi
   mkdir -p "$OUT/raw"
-  PORT="$PORT" WORKERS="$WORKERS" nohup "$PY" -m triage.serve > "$OUT/raw/service.log" 2>&1 &
-  echo $! > "$PIDFILE"
-  wait_ready
-  echo "service ready on $URL (pid $(cat "$PIDFILE"), log $OUT/raw/service.log)"
+  PORT="$PORT" WORKERS="$WORKERS" nohup "$PY" -m triage.serve >> "$OUT/raw/service.log" 2>&1 &
+  local pid=$!
+  echo "$pid" > "$PIDFILE"
+  for _ in $(seq 1 120); do
+    if ! kill -0 "$pid" 2>/dev/null; then
+      echo "service exited during start; see $OUT/raw/service.log" >&2
+      rm -f "$PIDFILE"; return 1
+    fi
+    if healthy; then
+      echo "service ready on $URL (pid $pid, log $OUT/raw/service.log)"; return 0
+    fi
+    sleep 1
+  done
+  echo "service did not become ready on $URL" >&2
+  return 1
 }
 
 stop() {
-  if [ -f "$PIDFILE" ]; then
-    kill "$(cat "$PIDFILE")" 2>/dev/null || true
-    rm -f "$PIDFILE"
-    echo "service stopped"
+  [ -f "$PIDFILE" ] || return 0
+  local pid
+  pid="$(cat "$PIDFILE")"
+  kill "$pid" 2>/dev/null || true
+  # Wait for the process to exit and the port to be released, so a following start cannot
+  # be answered by a server that is still shutting down.
+  for _ in $(seq 1 60); do
+    if ! kill -0 "$pid" 2>/dev/null && ! port_busy; then break; fi
+    sleep 0.5
+  done
+  if kill -0 "$pid" 2>/dev/null; then
+    kill -9 "$pid" 2>/dev/null || true
   fi
+  rm -f "$PIDFILE"
+  echo "service stopped"
 }
 
 with_service() {

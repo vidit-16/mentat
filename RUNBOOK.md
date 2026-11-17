@@ -13,6 +13,10 @@ scripts/reproduce.sh stop
 
 Or with Docker: `docker build -t op06-triage . && docker run --rm -p 8000:8000 op06-triage`.
 
+To restart, stop and wait for the process to exit before starting again (`stop` does this);
+a new process cannot bind a port the old one still holds, and a health check would be
+answered by the old one while it drains.
+
 Ready means `GET /healthz` returns 200 with the model and policy versions. It only does so
 after the model and policy loaded and a self-test request produced a real answer. If the
 policy file is invalid the service refuses to start and the log says which line of the

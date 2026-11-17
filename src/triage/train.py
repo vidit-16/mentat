@@ -285,8 +285,10 @@ def main(argv=None) -> int:
     for b in vec.blocks:
         arrays[f"idf_{b}"] = vec.idf[b]
     np.savez_compressed(out / "model.npz", **arrays)
-    (out / "vocab.json").write_text(json.dumps(vec.vocab, ensure_ascii=True, sort_keys=True),
-                                    encoding="utf-8")
+    # Written with "\n" line ends on every platform, so the model version hashed from these
+    # files is the same on Windows and Linux.
+    lf = {"encoding": "utf-8", "newline": "\n"}
+    (out / "vocab.json").write_text(json.dumps(vec.vocab, ensure_ascii=True, sort_keys=True), **lf)
     import sklearn
     meta = {"classes": classes, "temperature": temperature, "block_weights": BLOCK_WEIGHTS,
             "blocks": list(vec.blocks), "seed": SEED, "c_svm": C_SVM,
@@ -294,9 +296,9 @@ def main(argv=None) -> int:
             "n_features": vec.n_features,
             "libraries": {"numpy": np.__version__, "scikit-learn": sklearn.__version__},
             "train_sha256": hashlib.sha256(Path(args.train).read_bytes()).hexdigest()}
-    (out / "meta.json").write_text(json.dumps(meta, indent=1, sort_keys=True) + "\n", encoding="utf-8")
-    (out / "confidence.json").write_text(json.dumps(conf, indent=1) + "\n", encoding="utf-8")
-    (out / "oof_report.json").write_text(json.dumps(oof_report, indent=1) + "\n", encoding="utf-8")
+    (out / "meta.json").write_text(json.dumps(meta, indent=1, sort_keys=True) + "\n", **lf)
+    (out / "confidence.json").write_text(json.dumps(conf, indent=1) + "\n", **lf)
+    (out / "oof_report.json").write_text(json.dumps(oof_report, indent=1) + "\n", **lf)
     print(json.dumps(oof_report, indent=1))
     print(f"wrote {out} [{time.time() - t0:.0f}s]")
     return 0
