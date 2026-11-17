@@ -1,0 +1,193 @@
+{
+  "rows": {
+    "all": 2300,
+    "cut_window": 1527,
+    "clean": 2000,
+    "full_window": 773,
+    "noisy": 300,
+    "noise:typo": 50,
+    "noise:code_mixed": 50,
+    "noise:two_intents": 50,
+    "noise:empty": 50,
+    "noise:very_long": 50,
+    "noise:screenshot": 50
+  },
+  "action_errors": {
+    "all": {
+      "n": 2300,
+      "errors": 1400,
+      "error_rate": 0.6087,
+      "repeated_step": 147,
+      "sibling_intent": 281,
+      "wrong_flow": 662,
+      "wrong_step": 310
+    },
+    "cut_window": {
+      "n": 1527,
+      "errors": 1003,
+      "error_rate": 0.6568,
+      "repeated_step": 80,
+      "sibling_intent": 197,
+      "wrong_flow": 507,
+      "wrong_step": 219
+    },
+    "clean": {
+      "n": 2000,
+      "errors": 1198,
+      "error_rate": 0.599,
+      "repeated_step": 126,
+      "sibling_intent": 245,
+      "wrong_flow": 548,
+      "wrong_step": 279
+    },
+    "full_window": {
+      "n": 773,
+      "errors": 397,
+      "error_rate": 0.5136,
+      "repeated_step": 67,
+      "sibling_intent": 84,
+      "wrong_flow": 155,
+      "wrong_step": 91
+    },
+    "noisy": {
+      "n": 300,
+      "errors": 202,
+      "error_rate": 0.6733,
+      "repeated_step": 21,
+      "sibling_intent": 36,
+      "wrong_flow": 114,
+      "wrong_step": 31
+    },
+    "noise:typo": {
+      "n": 50,
+      "errors": 31,
+      "error_rate": 0.62,
+      "repeated_step": 5,
+      "sibling_intent": 8,
+      "wrong_flow": 12,
+      "wrong_step": 6
+    },
+    "noise:code_mixed": {
+      "n": 50,
+      "errors": 33,
+      "error_rate": 0.66,
+      "repeated_step": 8,
+      "sibling_intent": 6,
+      "wrong_flow": 13,
+      "wrong_step": 6
+    },
+    "noise:two_intents": {
+      "n": 50,
+      "errors": 31,
+      "error_rate": 0.62,
+      "repeated_step": 4,
+      "sibling_intent": 5,
+      "wrong_flow": 18,
+      "wrong_step": 4
+    },
+    "noise:empty": {
+      "n": 50,
+      "errors": 32,
+      "error_rate": 0.64,
+      "repeated_step": 2,
+      "sibling_intent": 11,
+      "wrong_flow": 14,
+      "wrong_step": 5
+    },
+    "noise:very_long": {
+      "n": 50,
+      "errors": 41,
+      "error_rate": 0.82,
+      "sibling_intent": 3,
+      "wrong_flow": 38
+    },
+    "noise:screenshot": {
+      "n": 50,
+      "errors": 34,
+      "error_rate": 0.68,
+      "repeated_step": 2,
+      "sibling_intent": 3,
+      "wrong_flow": 19,
+      "wrong_step": 10
+    }
+  },
+  "intent_errors": {
+    "all": {
+      "n": 2300,
+      "errors": 1438,
+      "error_rate": 0.6252,
+      "sibling_intent": 497,
+      "wrong_flow": 941
+    },
+    "cut_window": {
+      "n": 1527,
+      "errors": 1032,
+      "error_rate": 0.6758,
+      "sibling_intent": 350,
+      "wrong_flow": 682
+    },
+    "clean": {
+      "n": 2000,
+      "errors": 1228,
+      "error_rate": 0.614,
+      "sibling_intent": 437,
+      "wrong_flow": 791
+    },
+    "full_window": {
+      "n": 773,
+      "errors": 406,
+      "error_rate": 0.5252,
+      "sibling_intent": 147,
+      "wrong_flow": 259
+    },
+    "noisy": {
+      "n": 300,
+      "errors": 210,
+      "error_rate": 0.7,
+      "sibling_intent": 60,
+      "wrong_flow": 150
+    },
+    "noise:typo": {
+      "n": 50,
+      "errors": 29,
+      "error_rate": 0.58,
+      "sibling_intent": 14,
+      "wrong_flow": 15
+    },
+    "noise:code_mixed": {
+      "n": 50,
+      "errors": 29,
+      "error_rate": 0.58,
+      "sibling_intent": 8,
+      "wrong_flow": 21
+    },
+    "noise:two_intents": {
+      "n": 50,
+      "errors": 33,
+      "error_rate": 0.66,
+      "sibling_intent": 8,
+      "wrong_flow": 25
+    },
+    "noise:empty": {
+      "n": 50,
+      "errors": 37,
+      "error_rate": 0.74,
+      "sibling_intent": 18,
+      "wrong_flow": 19
+    },
+    "noise:very_long": {
+      "n": 50,
+      "errors": 50,
+      "error_rate": 1.0,
+      "sibling_intent": 4,
+      "wrong_flow": 46
+    },
+    "noise:screenshot": {
+      "n": 50,
+      "errors": 32,
+      "error_rate": 0.64,
+      "sibling_intent": 8,
+      "wrong_flow": 24
+    }
+  }
+}
