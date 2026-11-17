@@ -1,0 +1,43 @@
+# Clean-machine reproduction: a fresh Ubuntu VM, no GPU, no secrets, system Python.
+# Runs exactly what a reviewer runs: scripts/reproduce.sh all (setup, hash check, tests,
+# evaluation through the HTTP service, hostile pack, load test). Results are uploaded as a
+# workflow artifact; they are never committed back.
+name: reproduce
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  reproduce:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Machine
+        run: |
+          python3 --version; nproc; free -h; uname -a
+      - name: reproduce.sh all
+        env:
+          OUT: ci-results
+        run: scripts/reproduce.sh all
+      - name: Compare with committed dev numbers
+        run: |
+          .venv/bin/python - <<'PY'
+          import glob, json
+          ci = json.load(open(sorted(glob.glob("ci-results/raw/eval-*/report.json"))[-1]))
+          committed = json.load(open("results/manifest.json"))["claimed"]
+          print("ci        intent", ci["intent"]["accuracy_all"], "action", ci["action"]["accuracy_all"],
+                "ratio", ci["confidence"]["top70_error_ratio"])
+          print("committed intent", committed["intent_accuracy"], "action", committed["action_accuracy"],
+                "ratio", committed["top70_error_ratio"])
+          assert abs(ci["action"]["accuracy_all"] - committed["action_accuracy"]) < 0.002
+          assert abs(ci["intent"]["accuracy_all"] - committed["intent_accuracy"]) < 0.002
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ci-results
+          path: ci-results/
+          retention-days: 30
