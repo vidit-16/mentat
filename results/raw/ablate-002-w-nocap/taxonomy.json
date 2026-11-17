@@ -1,0 +1,189 @@
+{
+  "rows": {
+    "all": 2300,
+    "cut_window": 1527,
+    "clean": 2000,
+    "full_window": 773,
+    "noisy": 300,
+    "noise:typo": 50,
+    "noise:code_mixed": 50,
+    "noise:two_intents": 50,
+    "noise:empty": 50,
+    "noise:very_long": 50,
+    "noise:screenshot": 50
+  },
+  "action_errors": {
+    "all": {
+      "n": 2300,
+      "errors": 467,
+      "error_rate": 0.203,
+      "repeated_step": 14,
+      "sibling_intent": 90,
+      "wrong_flow": 118,
+      "wrong_step": 245
+    },
+    "cut_window": {
+      "n": 1527,
+      "errors": 359,
+      "error_rate": 0.2351,
+      "repeated_step": 12,
+      "sibling_intent": 77,
+      "wrong_flow": 104,
+      "wrong_step": 166
+    },
+    "clean": {
+      "n": 2000,
+      "errors": 394,
+      "error_rate": 0.197,
+      "repeated_step": 12,
+      "sibling_intent": 71,
+      "wrong_flow": 92,
+      "wrong_step": 219
+    },
+    "full_window": {
+      "n": 773,
+      "errors": 108,
+      "error_rate": 0.1397,
+      "repeated_step": 2,
+      "sibling_intent": 13,
+      "wrong_flow": 14,
+      "wrong_step": 79
+    },
+    "noisy": {
+      "n": 300,
+      "errors": 73,
+      "error_rate": 0.2433,
+      "repeated_step": 2,
+      "sibling_intent": 19,
+      "wrong_flow": 26,
+      "wrong_step": 26
+    },
+    "noise:typo": {
+      "n": 50,
+      "errors": 12,
+      "error_rate": 0.24,
+      "repeated_step": 2,
+      "sibling_intent": 4,
+      "wrong_flow": 1,
+      "wrong_step": 5
+    },
+    "noise:code_mixed": {
+      "n": 50,
+      "errors": 9,
+      "error_rate": 0.18,
+      "sibling_intent": 3,
+      "wrong_step": 6
+    },
+    "noise:two_intents": {
+      "n": 50,
+      "errors": 7,
+      "error_rate": 0.14,
+      "sibling_intent": 1,
+      "wrong_flow": 3,
+      "wrong_step": 3
+    },
+    "noise:empty": {
+      "n": 50,
+      "errors": 12,
+      "error_rate": 0.24,
+      "sibling_intent": 6,
+      "wrong_flow": 1,
+      "wrong_step": 5
+    },
+    "noise:very_long": {
+      "n": 50,
+      "errors": 23,
+      "error_rate": 0.46,
+      "sibling_intent": 2,
+      "wrong_flow": 18,
+      "wrong_step": 3
+    },
+    "noise:screenshot": {
+      "n": 50,
+      "errors": 10,
+      "error_rate": 0.2,
+      "sibling_intent": 3,
+      "wrong_flow": 3,
+      "wrong_step": 4
+    }
+  },
+  "intent_errors": {
+    "all": {
+      "n": 2300,
+      "errors": 698,
+      "error_rate": 0.3035,
+      "sibling_intent": 389,
+      "wrong_flow": 309
+    },
+    "cut_window": {
+      "n": 1527,
+      "errors": 557,
+      "error_rate": 0.3648,
+      "sibling_intent": 300,
+      "wrong_flow": 257
+    },
+    "clean": {
+      "n": 2000,
+      "errors": 567,
+      "error_rate": 0.2835,
+      "sibling_intent": 327,
+      "wrong_flow": 240
+    },
+    "full_window": {
+      "n": 773,
+      "errors": 141,
+      "error_rate": 0.1824,
+      "sibling_intent": 89,
+      "wrong_flow": 52
+    },
+    "noisy": {
+      "n": 300,
+      "errors": 131,
+      "error_rate": 0.4367,
+      "sibling_intent": 62,
+      "wrong_flow": 69
+    },
+    "noise:typo": {
+      "n": 50,
+      "errors": 16,
+      "error_rate": 0.32,
+      "sibling_intent": 13,
+      "wrong_flow": 3
+    },
+    "noise:code_mixed": {
+      "n": 50,
+      "errors": 16,
+      "error_rate": 0.32,
+      "sibling_intent": 11,
+      "wrong_flow": 5
+    },
+    "noise:two_intents": {
+      "n": 50,
+      "errors": 15,
+      "error_rate": 0.3,
+      "sibling_intent": 8,
+      "wrong_flow": 7
+    },
+    "noise:empty": {
+      "n": 50,
+      "errors": 18,
+      "error_rate": 0.36,
+      "sibling_intent": 12,
+      "wrong_flow": 6
+    },
+    "noise:very_long": {
+      "n": 50,
+      "errors": 42,
+      "error_rate": 0.84,
+      "sibling_intent": 7,
+      "wrong_flow": 35
+    },
+    "noise:screenshot": {
+      "n": 50,
+      "errors": 24,
+      "error_rate": 0.48,
+      "sibling_intent": 11,
+      "wrong_flow": 13
+    }
+  }
+}
