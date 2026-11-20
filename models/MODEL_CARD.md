@@ -1,4 +1,4 @@
-# Model card
+# Model card: Mentat
 
 | | |
 |---|---|

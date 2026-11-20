@@ -1,4 +1,4 @@
-# Memo: the inbox triage service
+# Memo: Mentat, the inbox triage service
 
 To: Customer-support manager
 Date: 17 November 2026

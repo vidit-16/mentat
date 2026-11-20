@@ -1,6 +1,6 @@
 # Runbook
 
-For whoever operates the triage service. Commands assume the repository root.
+For whoever operates Mentat, the triage service. Commands assume the repository root.
 
 ## Start and stop
 
@@ -11,7 +11,7 @@ scripts/reproduce.sh start      # background; waits for /healthz; pid in .servic
 scripts/reproduce.sh stop
 ```
 
-Or with Docker: `docker build -t op06-triage . && docker run --rm -p 8000:8000 op06-triage`.
+Or with Docker: `docker build -t mentat . && docker run --rm -p 8000:8000 mentat`.
 
 To restart, stop and wait for the process to exit before starting again (`stop` does this);
 a new process cannot bind a port the old one still holds, and a health check would be

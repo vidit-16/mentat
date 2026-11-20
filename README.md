@@ -1,4 +1,7 @@
-# OP-06 Triage the Inbox
+# Mentat
+
+OP-06 Triage the Inbox. Named after the human calculators in Dune, who do the work once
+thinking machines are banned: no language model decides anything here.
 
 A `POST /triage` service for the Deployment.inc Season 1 problem OP-06. It reads a support
 conversation so far (up to eight turns) and returns the customer's problem type (ABCD
@@ -83,7 +86,7 @@ train` retrains it (about 6 minutes on a 4-core laptop, 5 on the 2-vCPU CI runne
 with no argument for the list. `serve` runs in the foreground; `start`/`stop` run it in the
 background so the evaluation steps can reach it.
 
-Docker: `docker build -t op06-triage . && docker run --rm -p 8000:8000 op06-triage`.
+Docker: `docker build -t mentat . && docker run --rm -p 8000:8000 mentat`.
 
 The same `reproduce.sh all` runs on a fresh Ubuntu VM in GitHub Actions on every push
 (`.github/workflows/reproduce.yml`) and checks that the clean-machine accuracy matches the
