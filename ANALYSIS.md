@@ -110,8 +110,14 @@ Readings:
   The fix is the per-turn cap (keep the first 50 and last 30 words of a turn), measured on
   its own: very_long intent 0.16 → 0.60 [ablate-002-w-nocap vs ablate-001-w].
 - Code-mixed action dropped from 0.82 to 0.70 between the words-only model and the shipped
-  one. That is 6 rows of 50, inside the noise, but it is the one type that moved down and the
-  first thing I would recheck with more Hinglish data.
+  one. That is 6 rows of 50, inside the noise. Rechecked on all of dev [hinglish-001]: the
+  published rewrite (append "thoda jaldi karo please", sometimes my → mera, order → ordr)
+  applied to 1,995 rows leaves action accuracy unchanged (0.8281 before and after), so the
+  drop was noise. The recheck found a different problem: the rewrite raises confidence on
+  90% of rows, because the `unseen_words` signal was measured against a vocabulary fitted on
+  the same rows during training (mean 0.002) and takes values 7 standard deviations higher
+  on Hinglish. 47 rows move from a person to automated, 24 of them wrong; wrong answers
+  sent without a person rise from 160 to 180. Not fixed in the shipped model yet.
 - The hidden noisy slice is generated independently, so these are estimates of type-level
   behaviour, not promises.
 

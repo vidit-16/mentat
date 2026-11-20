@@ -211,3 +211,10 @@ runs:
     submitted: true
     config: {machine: "GitHub Actions ubuntu-24.04, 2 vCPU, Python 3.12.3, AMD EPYC 9V45", commit: bc9f9aa60f030f44c2f717daddee48c52d2983c1, workers: 2}
     description: "Submitted run: scripts/reproduce.sh all on a clean Linux VM, on the split history. 117 tests passed; evaluation through HTTP; hostile 99 of 99; load test at concurrency 8 and 32. Same labels and metrics as ci-44135706221; 22 of 2,300 confidences differ by 0.000001 (different CPU). Source of results/dev_predictions.jsonl, noisy_predictions.jsonl, hostile_results.jsonl and latency_bench.json."
+  - run_id: hinglish-001
+    date: "2026-11-20"
+    model: "train-002 (version 2de59e320f72ca21), policy 2026-11-17.1"
+    status: completed
+    raw_path: results/raw/hinglish-001/predictions.jsonl
+    config: {machine: "Windows laptop, Intel i5-10210U", rows: 1995, variants: [suffix, swaps, heavy], script: scripts/hinglish_slice.py}
+    description: "Published code_mixed rewrite applied to every dev row, compared with the clean row. Action accuracy unchanged; confidence rises through the unseen_words signal, so 47 rows move from a person to automated (24 wrong). Breakdown by signal in confidence_breakdown.txt."

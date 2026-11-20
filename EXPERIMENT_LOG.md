@@ -359,3 +359,40 @@ Labels are identical to the earlier run and to the laptop. 22 of 2,300 confidenc
 the rounded logistic output moves with the floating-point path. The concurrency 32 p95 is
 10 ms lower than last time on the newer CPU, which is a reminder that a single CI timing is
 one draw from a noisy machine. Artifact in `results/raw/ci-44771488788/`.
+
+## 2026-11-20 — Hinglish recheck on all of dev (`hinglish-001`)
+
+ANALYSIS.md left one open item: code-mixed action accuracy fell from 0.82 (words only) to
+0.70 (shipped), on 50 rows. Too few to say anything, so I made more.
+
+Comparing the 50 published code_mixed rows word by word with their clean originals gives the
+rewrite: 43 append "thoda jaldi karo please" to the last customer turn; the rest also change
+"my" to "mera" or misspell "order" as "ordr". `scripts/hinglish_slice.py` applies that to
+every dev row with a customer turn (1,995) and compares each with its clean version through
+the same pipeline. A third variant swaps 18 common English words for Hindi ones; the
+published generator does not do this, so it is a stress test only.
+
+| | clean | suffix | suffix + swaps | heavy |
+|---|---|---|---|---|
+| intent accuracy | 0.7368 | 0.7343 | 0.7348 | 0.7308 |
+| action accuracy | 0.8281 | 0.8281 | 0.8276 | 0.8281 |
+| sent to a person | 14.6% | 12.8% | 12.7% | 12.5% |
+| action accuracy when automated | 0.9061 | 0.8966 | 0.8955 | 0.8923 |
+| wrong and automated (rows) | 160 | 180 | 182 | 188 |
+
+Accuracy does not move: the earlier 0.82 → 0.70 was noise. Routing does. The suffix raises
+confidence on 1,796 of 1,995 rows, 47 rows move from a person to automated, and 24 of those
+are wrong.
+
+`scripts/confidence_breakdown.py` splits the change by signal. Almost all of it is
+`unseen_words` (+0.18 logit on average; the model's own scores move the other way, -0.04).
+Cause: in training this signal is measured against a vocabulary fitted on the same 20,000
+rows, so it is nearly always 0 (mean 0.0018, scale 0.0083). Clean dev already averages 0.006;
+with the suffix it averages 0.061, seven scales out. The fitted weight is small and positive,
+which is meaningless on data it never saw, and at seven scales it adds up. A train/serve
+mismatch I should have caught when I chose the signal.
+
+Not fixed yet. The fix is to measure `unseen_words` in training the same way the service
+does, against a vocabulary that has not seen the row (fit it per fold), or drop the signal.
+Either needs a retrain and a new model version, so every result reruns.
+

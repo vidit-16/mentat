@@ -1,0 +1,59 @@
+{
+ "model_version": "2de59e320f72ca21",
+ "policy_version": "2026-11-17.1",
+ "input_sha256": "0d6502b4bac26bb23fe9108d3933fb1f734410d2540dada00207a8f2ca1e1331",
+ "clean": {
+  "rows": 1995,
+  "intent_accuracy": 0.7368,
+  "action_accuracy": 0.8281,
+  "needs_human_rate": 0.1459,
+  "automated_action_accuracy": 0.9061,
+  "mean_confidence": 0.8359,
+  "wrong_and_automated": 160
+ },
+ "variants": {
+  "suffix": {
+   "rows": 1995,
+   "intent_accuracy": 0.7343,
+   "action_accuracy": 0.8281,
+   "needs_human_rate": 0.1278,
+   "automated_action_accuracy": 0.8966,
+   "mean_confidence": 0.8486,
+   "action_changed": 19,
+   "action_right_to_wrong": 5,
+   "action_wrong_to_right": 5,
+   "intent_changed": 57,
+   "newly_sent_to_person": 11,
+   "wrong_and_automated": 180
+  },
+  "swaps": {
+   "rows": 1995,
+   "intent_accuracy": 0.7348,
+   "action_accuracy": 0.8276,
+   "needs_human_rate": 0.1273,
+   "automated_action_accuracy": 0.8955,
+   "mean_confidence": 0.8491,
+   "action_changed": 28,
+   "action_right_to_wrong": 9,
+   "action_wrong_to_right": 8,
+   "intent_changed": 74,
+   "newly_sent_to_person": 14,
+   "wrong_and_automated": 182
+  },
+  "heavy": {
+   "rows": 1995,
+   "intent_accuracy": 0.7308,
+   "action_accuracy": 0.8281,
+   "needs_human_rate": 0.1248,
+   "automated_action_accuracy": 0.8923,
+   "mean_confidence": 0.8504,
+   "action_changed": 32,
+   "action_right_to_wrong": 9,
+   "action_wrong_to_right": 9,
+   "intent_changed": 83,
+   "newly_sent_to_person": 15,
+   "wrong_and_automated": 188
+  }
+ },
+ "seconds": 31.7
+}

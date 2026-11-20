@@ -700,6 +700,31 @@
     "gold_policy_violation_rate": 0.0883,
     "grader_version": "2.1"
    }
+  },
+  {
+   "run_id": "hinglish-001",
+   "date": "2026-11-20",
+   "seed": null,
+   "model": "train-002 (version 2de59e320f72ca21), policy 2026-11-17.1",
+   "status": "completed",
+   "input_sha256": "0d6502b4bac26bb23fe9108d3933fb1f734410d2540dada00207a8f2ca1e1331",
+   "raw_path": "results/raw/hinglish-001/predictions.jsonl",
+   "raw_sha256": "fee98725909bda3a9dcc3cdc6e940860d0aea17eedc36d75f78c69a58c34c965",
+   "description": "Published code_mixed rewrite applied to every dev row, compared with the clean row. Action accuracy unchanged; confidence rises through the unseen_words signal, so 47 rows move from a person to automated (24 wrong). Breakdown by signal in confidence_breakdown.txt.",
+   "config": {
+    "machine": "Windows laptop, Intel i5-10210U",
+    "rows": 1995,
+    "variants": [
+     "suffix",
+     "swaps",
+     "heavy"
+    ],
+    "script": "scripts/hinglish_slice.py"
+   },
+   "api_calls": 0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
   }
  ]
 }
