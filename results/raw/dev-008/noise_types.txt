@@ -1,0 +1,3 @@
+action accuracy by noise type, 50 rows each: dev-006 (shipped) / dev-008 (no character n-grams)
+dev-006 code_mixed 0.70 empty 0.80 screenshot 0.82 two_intents 0.90 typo 0.76 very_long 0.78
+dev-008 code_mixed 0.72 empty 0.82 screenshot 0.82 two_intents 0.88 typo 0.78 very_long 0.80

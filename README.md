@@ -77,9 +77,9 @@ scripts/reproduce.sh all
 ```
 
 That is: create `.venv` with pinned dependencies, check the reference files against the
-release hashes, run the 117 tests, evaluate through the HTTP service, run the hostile pack,
+release hashes, run the 118 tests, evaluate through the HTTP service, run the hostile pack,
 and load-test at concurrency 8 and 32. It uses the committed model; `scripts/reproduce.sh
-train` retrains it (about 20 minutes). Each step is also its own subcommand; run the script
+train` retrains it (about 6 minutes on a 4-core laptop, 5 on the 2-vCPU CI runner). Each step is also its own subcommand; run the script
 with no argument for the list. `serve` runs in the foreground; `start`/`stop` run it in the
 background so the evaluation steps can reach it.
 

@@ -1,0 +1,16 @@
+version committed eb8d8c0896f96f46 retrained 2cc1bde6f99da29a
+W_action     max abs diff 0  values differing 0 of 2803230
+W_flow       max abs diff 0  values differing 0 of 934410
+W_intent     max abs diff 0  values differing 0 of 8970336
+b_action     max abs diff 0  values differing 0 of 30
+b_flow       max abs diff 0  values differing 0 of 10
+b_intent     max abs diff 0  values differing 0 of 96
+idf_c        max abs diff 0  values differing 0 of 20645
+idf_s        max abs diff 0  values differing 0 of 21504
+idf_w        max abs diff 0  values differing 0 of 50475
+idf_x        max abs diff 0  values differing 0 of 817
+vocab.json       identical: True
+meta.json        identical: True
+confidence.json  identical: False
+confidence coef max abs diff 1.0000000000287557e-06
+threshold committed 0.5663 retrained 0.5663

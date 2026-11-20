@@ -1,0 +1,59 @@
+{
+ "model_version": "0979514d9c18ea61",
+ "policy_version": "2026-11-17.1",
+ "input_sha256": "0d6502b4bac26bb23fe9108d3933fb1f734410d2540dada00207a8f2ca1e1331",
+ "clean": {
+  "rows": 1995,
+  "intent_accuracy": 0.7368,
+  "action_accuracy": 0.8311,
+  "needs_human_rate": 0.1434,
+  "automated_action_accuracy": 0.9023,
+  "mean_confidence": 0.837,
+  "wrong_and_automated": 167
+ },
+ "variants": {
+  "suffix": {
+   "rows": 1995,
+   "intent_accuracy": 0.7353,
+   "action_accuracy": 0.8316,
+   "needs_human_rate": 0.1524,
+   "automated_action_accuracy": 0.9048,
+   "mean_confidence": 0.8327,
+   "action_changed": 17,
+   "action_right_to_wrong": 5,
+   "action_wrong_to_right": 6,
+   "intent_changed": 35,
+   "newly_sent_to_person": 25,
+   "wrong_and_automated": 161
+  },
+  "swaps": {
+   "rows": 1995,
+   "intent_accuracy": 0.7373,
+   "action_accuracy": 0.8326,
+   "needs_human_rate": 0.1509,
+   "automated_action_accuracy": 0.9044,
+   "mean_confidence": 0.8318,
+   "action_changed": 22,
+   "action_right_to_wrong": 6,
+   "action_wrong_to_right": 9,
+   "intent_changed": 48,
+   "newly_sent_to_person": 27,
+   "wrong_and_automated": 162
+  },
+  "heavy": {
+   "rows": 1995,
+   "intent_accuracy": 0.7363,
+   "action_accuracy": 0.8321,
+   "needs_human_rate": 0.1549,
+   "automated_action_accuracy": 0.9033,
+   "mean_confidence": 0.8303,
+   "action_changed": 36,
+   "action_right_to_wrong": 10,
+   "action_wrong_to_right": 12,
+   "intent_changed": 66,
+   "newly_sent_to_person": 37,
+   "wrong_and_automated": 163
+  }
+ },
+ "seconds": 7.8
+}

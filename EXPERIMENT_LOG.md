@@ -183,7 +183,7 @@ The threshold is chosen here, on out-of-fold training predictions, not on dev.
   Per noise type the two models trade places by up to 8 points on 50 rows each, which is
   also noise. I kept the augmented model because it carries the `turn_index` dropout, and
   did not spend another 19 minutes training a variant with dropout and no augmentation.
-  That variant is the honest next check.
+  That variant is the honest next check. (Done on 2026-11-20 as train-004: it ties.)
 
 ## 2026-11-17 — Tests against the trained model; what the extended pack found
 
@@ -472,3 +472,47 @@ Conclusion: the noisy copies do nothing measurable either way. I kept the shippe
 The variant is a little simpler, but switching would mean a new model version, another full
 CI run and new numbers everywhere, for a difference I cannot tell from noise. If I were
 training again from scratch I would drop the copies.
+
+## 2026-11-20 — Without character n-grams (`train-005`, `dev-008`)
+
+Open since 17 November: character n-grams made the words-only model worse (action +25
+errors, gap 0.010 → 0.043), and I left them in because later blocks recovered the loss. This
+run trains the full shipped setup (augmentation, dropout, folds) without them: 72,796
+features instead of 93,441, 2 minutes instead of 6.
+
+| | shipped (dev-006) | no characters (dev-008) |
+|---|---|---|
+| intent accuracy | 0.7204 | 0.7261 |
+| action accuracy | 0.8217 | 0.8257 |
+| macro-F1 | 0.6895 | 0.6870 |
+| clean-to-noisy gap | 0.0327 | 0.0257 |
+| top-70% error ratio | 0.2821 | 0.2742 |
+| right among the 85% most confident | 0.9064 | 0.9049 |
+| typo rows, action (50) | 0.76 | 0.78 |
+
+Paired bootstrap: action -0.002 to +0.010, ratio -0.038 to +0.019, top 85% -0.007 to +0.004.
+All contain zero. Hinglish [hinglish-004]: wrong and automated 167 clean, 161 with the
+published rewrite.
+
+The block meant for typos does nothing for typos. Same call as for augmentation: kept the
+shipped model, because switching costs a new version and a full revalidation for a
+difference inside the noise. A model without characters and without noisy copies would be
+the simplest one that scores the same; I have not trained it.
+
+## 2026-11-20 — Training time on clean Linux (`train-timing-44779509906`)
+
+New manual workflow `.github/workflows/train-timing.yml` runs `scripts/reproduce.sh train`
+on a fresh ubuntu-24.04 runner (2 vCPU, Xeon 6975P-C) and compares the result with the
+committed model.
+
+Training took 275 seconds (features 18 s, three full fits 65 s, 15 fold fits 186 s,
+confidence 5 s), faster than the 4-core laptop's 347.
+
+Every weight, bias and idf value is identical to the committed model, and so are
+`vocab.json` and `meta.json`. `confidence.json` differs: coefficients by at most 0.000001,
+threshold the same. That is enough to change the version string (`2cc1bde6f99da29a` against
+`eb8d8c0896f96f46`), so a reviewer who retrains on Linux gets a model that behaves the same
+but reports a different version. Noted in RUNBOOK.md.
+
+Also fixed two stale lines: the 17 November entry now points to train-004, and the 19-minute
+retraining figure in README.md, RUNBOOK.md and DECISIONS.md is replaced with measured times.

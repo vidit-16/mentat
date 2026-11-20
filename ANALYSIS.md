@@ -64,7 +64,10 @@ What moved nothing, or went the wrong way:
 - **Character n-grams** made action worse (+25 errors) and widened the noisy gap from 0.010
   to 0.043. I expected them to help with typos; on this data the typo rows are short
   replies whose meaning comes from the rest of the context. Left in because later blocks
-  recover the loss; removing them is an open experiment.
+  recover the loss. Removing them from the full model [train-005, dev-008] ties: action
+  0.8217 vs 0.8257, top-70% ratio 0.282 vs 0.274, typo rows 0.76 vs 0.78; every paired 95%
+  interval contains zero. They do not earn their place, but the evidence for removing them
+  is no stronger than for keeping them.
 - **Augmentation** (noisy copies of 20% of training rows): no measurable change. Action
   0.8252 → 0.8226, within noise. Rechecked against a model with the same `turn_index`
   dropout but no noisy copies [train-004, dev-007]: action 0.8217 vs 0.8243, gap 0.0327 vs

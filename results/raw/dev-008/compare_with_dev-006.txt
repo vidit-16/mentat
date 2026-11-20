@@ -1,0 +1,9 @@
+2300 rows
+                                        dev-006        dev-008
+action accuracy                          0.8217         0.8257
+top-70% error ratio                      0.2822         0.2743
+accuracy of 85% most confident           0.9064         0.9049
+95% interval of the difference (second - first):
+  action accuracy                -0.0022 to +0.0104
+  top-70% error ratio            -0.0381 to +0.0191
+  accuracy of 85% most confident -0.0066 to +0.0036

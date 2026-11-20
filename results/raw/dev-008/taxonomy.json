@@ -1,0 +1,187 @@
+{
+  "rows": {
+    "all": 2300,
+    "cut_window": 1527,
+    "clean": 2000,
+    "full_window": 773,
+    "noisy": 300,
+    "noise:typo": 50,
+    "noise:code_mixed": 50,
+    "noise:two_intents": 50,
+    "noise:empty": 50,
+    "noise:very_long": 50,
+    "noise:screenshot": 50
+  },
+  "action_errors": {
+    "all": {
+      "n": 2300,
+      "errors": 401,
+      "error_rate": 0.1743,
+      "repeated_step": 6,
+      "sibling_intent": 69,
+      "wrong_flow": 100,
+      "wrong_step": 226
+    },
+    "cut_window": {
+      "n": 1527,
+      "errors": 313,
+      "error_rate": 0.205,
+      "repeated_step": 6,
+      "sibling_intent": 55,
+      "wrong_flow": 90,
+      "wrong_step": 162
+    },
+    "clean": {
+      "n": 2000,
+      "errors": 342,
+      "error_rate": 0.171,
+      "repeated_step": 6,
+      "sibling_intent": 55,
+      "wrong_flow": 83,
+      "wrong_step": 198
+    },
+    "full_window": {
+      "n": 773,
+      "errors": 88,
+      "error_rate": 0.1138,
+      "sibling_intent": 14,
+      "wrong_flow": 10,
+      "wrong_step": 64
+    },
+    "noisy": {
+      "n": 300,
+      "errors": 59,
+      "error_rate": 0.1967,
+      "sibling_intent": 14,
+      "wrong_flow": 17,
+      "wrong_step": 28
+    },
+    "noise:typo": {
+      "n": 50,
+      "errors": 11,
+      "error_rate": 0.22,
+      "sibling_intent": 3,
+      "wrong_flow": 2,
+      "wrong_step": 6
+    },
+    "noise:code_mixed": {
+      "n": 50,
+      "errors": 14,
+      "error_rate": 0.28,
+      "sibling_intent": 3,
+      "wrong_flow": 1,
+      "wrong_step": 10
+    },
+    "noise:two_intents": {
+      "n": 50,
+      "errors": 6,
+      "error_rate": 0.12,
+      "sibling_intent": 2,
+      "wrong_flow": 3,
+      "wrong_step": 1
+    },
+    "noise:empty": {
+      "n": 50,
+      "errors": 9,
+      "error_rate": 0.18,
+      "sibling_intent": 4,
+      "wrong_flow": 1,
+      "wrong_step": 4
+    },
+    "noise:very_long": {
+      "n": 50,
+      "errors": 10,
+      "error_rate": 0.2,
+      "sibling_intent": 1,
+      "wrong_flow": 4,
+      "wrong_step": 5
+    },
+    "noise:screenshot": {
+      "n": 50,
+      "errors": 9,
+      "error_rate": 0.18,
+      "sibling_intent": 1,
+      "wrong_flow": 6,
+      "wrong_step": 2
+    }
+  },
+  "intent_errors": {
+    "all": {
+      "n": 2300,
+      "errors": 630,
+      "error_rate": 0.2739,
+      "sibling_intent": 363,
+      "wrong_flow": 267
+    },
+    "cut_window": {
+      "n": 1527,
+      "errors": 503,
+      "error_rate": 0.3294,
+      "sibling_intent": 274,
+      "wrong_flow": 229
+    },
+    "clean": {
+      "n": 2000,
+      "errors": 529,
+      "error_rate": 0.2645,
+      "sibling_intent": 304,
+      "wrong_flow": 225
+    },
+    "full_window": {
+      "n": 773,
+      "errors": 127,
+      "error_rate": 0.1643,
+      "sibling_intent": 89,
+      "wrong_flow": 38
+    },
+    "noisy": {
+      "n": 300,
+      "errors": 101,
+      "error_rate": 0.3367,
+      "sibling_intent": 59,
+      "wrong_flow": 42
+    },
+    "noise:typo": {
+      "n": 50,
+      "errors": 14,
+      "error_rate": 0.28,
+      "sibling_intent": 10,
+      "wrong_flow": 4
+    },
+    "noise:code_mixed": {
+      "n": 50,
+      "errors": 15,
+      "error_rate": 0.3,
+      "sibling_intent": 12,
+      "wrong_flow": 3
+    },
+    "noise:two_intents": {
+      "n": 50,
+      "errors": 16,
+      "error_rate": 0.32,
+      "sibling_intent": 9,
+      "wrong_flow": 7
+    },
+    "noise:empty": {
+      "n": 50,
+      "errors": 15,
+      "error_rate": 0.3,
+      "sibling_intent": 10,
+      "wrong_flow": 5
+    },
+    "noise:very_long": {
+      "n": 50,
+      "errors": 16,
+      "error_rate": 0.32,
+      "sibling_intent": 5,
+      "wrong_flow": 11
+    },
+    "noise:screenshot": {
+      "n": 50,
+      "errors": 25,
+      "error_rate": 0.5,
+      "sibling_intent": 13,
+      "wrong_flow": 12
+    }
+  }
+}

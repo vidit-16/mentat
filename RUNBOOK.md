@@ -89,9 +89,11 @@ Examples:
 ## Retrain
 
 ```bash
-scripts/reproduce.sh train          # about 15-25 minutes on a 4-core laptop
+scripts/reproduce.sh train          # about 6 minutes on a 4-core laptop, 5 on a 2-vCPU CI runner
 scripts/reproduce.sh eval           # compare with the previous results/ before switching
 ```
 
-Training is deterministic for a given platform and library versions. Keep the previous
+Training is deterministic for a given platform and library versions. Across platforms the
+classifier weights come out identical, but the confidence model can differ in the sixth
+decimal, which changes the model version string (train-timing-44779509906). Keep the previous
 `models/` directory until the new one has been compared.

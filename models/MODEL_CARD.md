@@ -5,7 +5,7 @@
 | What | Three linear classifiers (intent: 96 classes, flow: 10, action: 30) and a confidence model |
 | Trained on | `reference/train.jsonl.gz`, sha256 `9243c4129368a7696526688990edde9ad0243f842f987ec5f1196bfdb89011be`, plus 3962 noisy copies made by `src/triage/train.py` |
 | Never trained on | `dev.jsonl`, `dev_noisy.jsonl`, `hostile.jsonl`, or any held-out data |
-| Training command | `scripts/reproduce.sh train` (run id train-003, about 6 minutes on a 4-core laptop) |
+| Training command | `scripts/reproduce.sh train` (run id train-003, about 6 minutes on a 4-core laptop; 4.6 minutes on a 2-vCPU GitHub Actions runner) |
 | Seed | 20261117 |
 | Libraries | numpy 2.5.5, scikit-learn 1.9.1 (training only) |
 | Features | 93,441 sparse features in blocks w, c, s, x (see `src/triage/features.py`) |
