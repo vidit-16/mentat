@@ -7,10 +7,10 @@
   "noisy_accuracy": 0.7933,
   "schema_valid_pct": 100.0,
   "top70_error_ratio": 0.2821,
-  "cost_per_message_usd": 1.33e-07,
-  "latency_p95_s": 0.0441
+  "cost_per_message_usd": 1.32e-07,
+  "latency_p95_s": 0.044
  },
- "submitted_run": "ci-44135706221",
+ "submitted_run": "ci-44771488788",
  "spend": {
   "results_usd": 0.014076,
   "compute_usd": 0,
@@ -45,19 +45,19 @@
  "artifacts": {
   "dev_predictions.jsonl": {
    "path": "results/dev_predictions.jsonl",
-   "sha256": "929331fcae15a311357b3db465cebff7cde548a2bb29a480a92a8a3c822ce25a"
+   "sha256": "2b4542f23239055b45340e1a815d734c02c6e136f4ec2591895b1d512892a347"
   },
   "noisy_predictions.jsonl": {
    "path": "results/noisy_predictions.jsonl",
-   "sha256": "86bc8dec9ded6f2fc99e09d47332d56f956fa9e03d627853fa5b05e103d79b43"
+   "sha256": "44a228d61e58d25df5ee55342a873eb4b50a51a5285e8d63258cfa9b50e058c9"
   },
   "hostile_results.jsonl": {
    "path": "results/hostile_results.jsonl",
-   "sha256": "da8cc56c543ac09750809032b49be775a3e312247bbae18b153b8e6bbf28de2a"
+   "sha256": "bf170936124a431241f3876f5b735428f29c9ef57e901f353c32a99ec1e8ce69"
   },
   "latency_bench.json": {
    "path": "results/latency_bench.json",
-   "sha256": "8ec719ab2b0e54337253d371f26f809d9ce747ad4ca0ee6ef4f66bb453b6194b"
+   "sha256": "37776f37bbe8ddbfbba521e2336935656c537dc2400bc08f05c97ed292be27d2"
   }
  },
  "runs": [
@@ -646,10 +646,42 @@
    "input_sha256": "0d6502b4bac26bb23fe9108d3933fb1f734410d2540dada00207a8f2ca1e1331",
    "raw_path": "results/raw/ci-44135706221/raw/eval-20261117T172010Z/predictions.jsonl",
    "raw_sha256": "811c427c1f26dd9a61fa49355bb45599a96e86843afc9b71b937f7c412d25dfc",
-   "description": "Submitted run: scripts/reproduce.sh all on a clean Linux VM. 117 tests passed; evaluation through HTTP; hostile 99 of 99; load test at concurrency 8 and 32. Source of results/dev_predictions.jsonl, noisy_predictions.jsonl, hostile_results.jsonl and latency_bench.json.",
+   "description": "scripts/reproduce.sh all on a clean Linux VM. 117 tests passed; evaluation through HTTP; hostile 99 of 99; load test at concurrency 8 and 32. Was the submitted run until 2026-11-20. Commit e212761 is no longer on main since the history was split into smaller commits; its tree is the same as d94ebda.",
    "config": {
-    "machine": "GitHub Actions ubuntu-24.04, 2 vCPU, 7.8 GiB, Python 3.12.3",
+    "machine": "GitHub Actions ubuntu-24.04, 2 vCPU, 7.8 GiB, Python 3.12.3, AMD EPYC 7763",
     "commit": "e2127613a5cf51b54580d65773c6749e7127f006",
+    "workers": 2
+   },
+   "api_calls": 0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0,
+   "metrics": {
+    "intent_accuracy": 0.7204,
+    "macro_f1": 0.6895,
+    "action_accuracy": 0.8217,
+    "noisy_accuracy": 0.7933,
+    "noisy_gap": 0.0327,
+    "schema_valid_pct": 100.0,
+    "top70_error_ratio": 0.2821,
+    "policy_violation_rate": 0.0778,
+    "gold_policy_violation_rate": 0.0883,
+    "grader_version": "2.1"
+   }
+  },
+  {
+   "run_id": "ci-44771488788",
+   "date": "2026-11-20",
+   "seed": null,
+   "model": "train-002 (version 2de59e320f72ca21), policy 2026-11-17.1",
+   "status": "completed",
+   "input_sha256": "0d6502b4bac26bb23fe9108d3933fb1f734410d2540dada00207a8f2ca1e1331",
+   "raw_path": "results/raw/ci-44771488788/raw/eval-20261120T161545Z/predictions.jsonl",
+   "raw_sha256": "ce834b06cb65062f4b8d620ae6b022297c7fe18228021e7c00fda7ef51302828",
+   "description": "Submitted run: scripts/reproduce.sh all on a clean Linux VM, on the split history. 117 tests passed; evaluation through HTTP; hostile 99 of 99; load test at concurrency 8 and 32. Same labels and metrics as ci-44135706221; 22 of 2,300 confidences differ by 0.000001 (different CPU). Source of results/dev_predictions.jsonl, noisy_predictions.jsonl, hostile_results.jsonl and latency_bench.json.",
+   "config": {
+    "machine": "GitHub Actions ubuntu-24.04, 2 vCPU, Python 3.12.3, AMD EPYC 9V45",
+    "commit": "bc9f9aa60f030f44c2f717daddee48c52d2983c1",
     "workers": 2
    },
    "api_calls": 0,

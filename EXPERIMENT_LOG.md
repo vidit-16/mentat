@@ -338,3 +338,24 @@ logs (`train-001-failed.log`, `train-002/train.log`) turned out not to be in git
 manifest listed them, so a reviewer would have found missing evidence, including the failed
 run. Added an exception for `results/raw/`, committed the five logs, and the manifest
 writer now uses LF so its hashes match what git stores. All 29 listed hashes match HEAD.
+
+## 2026-11-20 — History split into smaller commits; clean-Linux rerun (`ci-44771488788`)
+
+The repository had four commits, the first holding almost everything, which made the work
+hard to review. Rebuilt `main` as 31 commits in the order the parts were built, each dated
+with the time that part was done on 17 November; the final tree is byte for byte the same as
+before. This removed commit e212761, which the submitted CI run (44135706221) was tied to, so
+I reran `scripts/reproduce.sh all` on the new head (bc9f9aa) and made that the submitted run.
+
+- tests: 117 passed
+- evaluation through HTTP: intent 0.7204, action 0.8217, macro-F1 0.6895, gap 0.0327,
+  schema 100%, violations 0.0778, top-70 ratio 0.2821; same as before
+- hostile pack: 99 of 99 passed, slowest 21 ms
+- load: concurrency 8 p95 44.0 ms at 188 requests/s; concurrency 32 p95 45.0 ms at 742
+  requests/s; 0 errors
+
+Labels are identical to the earlier run and to the laptop. 22 of 2,300 confidences differ by
+0.000001: this VM had an AMD EPYC 9V45, the earlier one an EPYC 7763, and the last digit of
+the rounded logistic output moves with the floating-point path. The concurrency 32 p95 is
+10 ms lower than last time on the newer CPU, which is a reminder that a single CI timing is
+one draw from a noisy machine. Artifact in `results/raw/ci-44771488788/`.

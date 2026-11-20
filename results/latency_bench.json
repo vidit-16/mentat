@@ -18,18 +18,18 @@
    "non_200": 0,
    "errors": 0,
    "latency_ms": {
-    "p50": 42.98,
-    "p95": 44.08,
-    "p99": 45.97,
-    "max": 50.91,
-    "mean": 42.89
+    "p50": 42.0,
+    "p95": 43.99,
+    "p99": 44.99,
+    "max": 72.99,
+    "mean": 42.52
    },
-   "throughput_rps": 186.4,
-   "wall_seconds": 16.63,
+   "throughput_rps": 188.2,
+   "wall_seconds": 16.47,
    "client": {
     "python": "3.12.3",
     "os": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
-    "cpu": "AMD EPYC 7763 64-Core Processor",
+    "cpu": "AMD EPYC 9V45 96-Core Processor",
     "logical_cpus": 2
    },
    "measured_by": "client-side wall clock per request (time.perf_counter)",
@@ -87,7 +87,7 @@
     "10251-21-noisy",
     "..."
    ],
-   "compute_usd_per_1000_messages_at_this_throughput": 0.000133
+   "compute_usd_per_1000_messages_at_this_throughput": 0.000132
   },
   {
    "label": "c32",
@@ -99,18 +99,18 @@
    "non_200": 0,
    "errors": 0,
    "latency_ms": {
-    "p50": 47.98,
-    "p95": 54.83,
-    "p99": 57.96,
-    "max": 64.82,
-    "mean": 48.48
+    "p50": 42.12,
+    "p95": 44.99,
+    "p99": 52.91,
+    "max": 63.38,
+    "mean": 42.86
    },
-   "throughput_rps": 652.2,
-   "wall_seconds": 4.75,
+   "throughput_rps": 742.1,
+   "wall_seconds": 4.18,
    "client": {
     "python": "3.12.3",
     "os": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
-    "cpu": "AMD EPYC 7763 64-Core Processor",
+    "cpu": "AMD EPYC 9V45 96-Core Processor",
     "logical_cpus": 2
    },
    "measured_by": "client-side wall clock per request (time.perf_counter)",
@@ -168,7 +168,7 @@
     "10251-21-noisy",
     "..."
    ],
-   "compute_usd_per_1000_messages_at_this_throughput": 3.8e-05
+   "compute_usd_per_1000_messages_at_this_throughput": 3.3e-05
   }
  ]
 }
