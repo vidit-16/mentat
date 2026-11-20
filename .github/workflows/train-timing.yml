@@ -1,0 +1,53 @@
+# Retrain on a clean Ubuntu VM and time it. Run by hand only (Actions tab, "Run workflow").
+# Also checks whether training on Linux gives the committed model: same version, or how far
+# the weights and the confidence model are from it. Nothing is committed back.
+name: train-timing
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  train:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Machine
+        run: |
+          python3 --version; nproc; free -h; lscpu | grep "Model name"
+      - name: Setup
+        run: scripts/reproduce.sh setup
+      - name: Keep the committed model
+        run: cp -r models committed-model
+      - name: Train
+        run: |
+          start=$(date +%s)
+          scripts/reproduce.sh train 2>&1 | tee train.log
+          echo "wall seconds: $(( $(date +%s) - start ))" | tee -a train.log
+      - name: Compare with the committed model
+        run: |
+          PYTHONPATH=src .venv/bin/python - <<'PY' | tee compare.txt
+          import json
+          import numpy as np
+          from triage.model import Model
+          old, new = Model("committed-model"), Model("models")
+          print("version committed", old.version, "retrained", new.version)
+          a, b = np.load("committed-model/model.npz"), np.load("models/model.npz")
+          for k in sorted(a.files):
+              d = np.abs(a[k].astype(np.float64) - b[k].astype(np.float64))
+              print(f"{k:12s} max abs diff {d.max():.3g}  values differing {int((d > 0).sum())} of {d.size}")
+          for name in ("vocab.json", "meta.json", "confidence.json"):
+              same = open(f"committed-model/{name}", "rb").read() == open(f"models/{name}", "rb").read()
+              print(f"{name:16s} identical: {same}")
+          ca, cb = (json.load(open(f"{d}/confidence.json")) for d in ("committed-model", "models"))
+          print("confidence coef max abs diff", float(np.max(np.abs(np.array(ca["coef"]) - np.array(cb["coef"])))))
+          print("threshold committed", ca["threshold"], "retrained", cb["threshold"])
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: train-timing
+          path: |
+            train.log
+            compare.txt
+          retention-days: 30
