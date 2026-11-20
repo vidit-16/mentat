@@ -11,9 +11,9 @@ models:
       provider: OpenAI API
       role: "intent re-ranker on low-confidence rows (llm-001); not adopted, not in the service"
       price_usd_per_million: {input: 0.40, output: 1.60}
-      price_source: "MODELS.md of the challenge repository (pinned Season 1 price, verified there 2026-09-06)"
+      price_source: "benchmark model list (pinned price, verified there 2026-09-06)"
 reference:
-  repository: Deployment-inc/Deployment.inc-Hiring-Problems
+  repository: benchmark source repository (see LICENSE)
   commit: d87699bb97de6504b33f681eed66918a4d433ba0
   release: season-1-2026-09-07
   grader: "reference/grader.py (version 2.1), unmodified"

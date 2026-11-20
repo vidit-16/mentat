@@ -1,9 +1,9 @@
 # Mentat
 
-OP-06 Triage the Inbox. Named after the human calculators in Dune, who do the work once
+Customer-support triage. Named after the human calculators in Dune, who do the work once
 thinking machines are banned: no language model decides anything here.
 
-A `POST /triage` service for the Deployment.inc Season 1 problem OP-06. It reads a support
+A `POST /triage` service. It reads a support
 conversation so far (up to eight turns) and returns the customer's problem type (ABCD
 subflow), the next step the written procedure permits, a confidence, and whether a person
 should look first.
@@ -15,8 +15,8 @@ support manager edits, and a separate confidence model.
 
 Measured by the unmodified official `grader.py` on 2,000 clean + 300 noisy + 9 hostile rows,
 through the HTTP service, by `scripts/reproduce.sh all` on a clean GitHub Actions Ubuntu VM
-[run `ci-44775973227`]. The laptop gives the same labels and metrics [run `dev-006`]; a few confidences differ in the sixth decimal between CPUs. These are development numbers; the hidden
-test split is scored by the reviewers.
+[run `ci-44775973227`]. The laptop gives the same labels and metrics [run `dev-006`]; a few confidences differ in the sixth decimal between CPUs. These are development numbers on public data; a held-out
+test split would be the real measure.
 
 | | Shipped | Bar | Published baseline |
 |---|---|---|---|
@@ -107,7 +107,7 @@ hostile request in the submitted run: 243 ms.
 | `src/triage/` | service: `app.py` (HTTP), `envelope.py`, `sanitise.py`, `events.py`, `features.py`, `model.py`, `policy.py`, `confidence.py`, `pipeline.py`, `respond.py`; `train.py` (training only) |
 | `policy/` | the rule table and its change log |
 | `models/` | trained weights (no pickle) and `MODEL_CARD.md` |
-| `reference/` | unmodified challenge files and their release hashes |
+| `reference/` | the benchmark's data, grader and baseline, unmodified, with their release hashes |
 | `scripts/` | `reproduce.sh`, evaluation, hostile run, load generator, taxonomy, manifest, ablations, LLM experiment |
 | `tests/` | contract, hostile, invariants, policy change, fuzzing |
 | `results/` | submitted predictions, hostile results, latency, `manifest.json`, `runs.yaml`, and every run in `raw/` |
@@ -125,11 +125,11 @@ hostile request in the submitted run: 243 ms.
   the remaining errors.
 - Intent when the opening message has left the 8-turn window: error doubles (16% → 34%).
 - Sibling intents with the same procedure (`return_size` / `return_color`).
-- Code-mixed messages: action 0.70 on 50 rows, the one noise type that went down in the last
-  change; small sample.
+- Code-mixed messages: action 0.70 on 50 rows looked like a drop. Rechecked on 1,995 rows
+  [hinglish-001]: no accuracy loss; a confidence bug it exposed was fixed [hinglish-002].
 - Only trained on ABCD's synthetic retailer. New request types, products or procedure steps
   need retraining or rule edits.
-- Development numbers are on public dev data; the reviewers' noisy slice is generated
+- Development numbers are on public dev data; a held-out noisy slice would be generated
   independently.
 
 ## Spend

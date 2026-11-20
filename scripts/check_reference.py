@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 """Check that the vendored challenge files are byte-identical to the pinned release.
 
-Hashes in reference/SHA256SUMS were copied from RELEASE_MANIFEST.json of
-Deployment-inc/Deployment.inc-Hiring-Problems at commit
-d87699bb97de6504b33f681eed66918a4d433ba0 (release season-1-2026-09-07).
+Hashes in reference/SHA256SUMS were copied from the benchmark's release manifest at commit
+d87699bb97de6504b33f681eed66918a4d433ba0 (release 2026-09-07).
 """
 import hashlib
 import sys

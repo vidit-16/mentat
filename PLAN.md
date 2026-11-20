@@ -1,10 +1,9 @@
-# OP-06 Triage the Inbox: plan and architecture
+# Mentat: plan and architecture
 
 Status: plan only. No solution code exists yet.
-Written 17 November 2026. Submission window closes 7 December 2026, 23:59 IST.
-Source read: `Deployment-inc/Deployment.inc-Hiring-Problems` at its published root commit
-(problem statement, `references/OP-06/`, README rubric, JUDGMENT_REVIEW, SUBMISSION_SCHEMA,
-EVALUATION_PROTOCOL, CALIBRATION, PINS, MODELS).
+Written 17 November 2026.
+Source read: the benchmark's problem statement, reference files, rubric, evaluation
+protocol, calibration notes, version pins and model list.
 
 ## 1. Summary
 
