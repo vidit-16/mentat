@@ -1,0 +1,16 @@
+{
+ "via": "in-process",
+ "versions": {
+  "model": "eb8d8c0896f96f46",
+  "policy": "2026-11-17.1"
+ },
+ "seconds": 7.8,
+ "rows": 2309,
+ "input_sha256": "1244df9d7ee47895c489824fc7383bb381a6167aca8aa209d204cc521045a156",
+ "needs_human_share": 0.1526,
+ "automated_action_accuracy": 0.9035,
+ "abstentions": 0,
+ "policy_conflicts": 72,
+ "no_turn_index": true,
+ "mode_override": null
+}

@@ -192,7 +192,10 @@ def main(argv=None) -> int:
     ap.add_argument("--policy", default=str(ROOT / "policy" / "policy.yaml"))
     ap.add_argument("--out", default=str(ROOT / "models"))
     ap.add_argument("--blocks", default="wcsx")
-    ap.add_argument("--no-augment", action="store_true")
+    ap.add_argument("--no-augment", action="store_true",
+                    help="no noisy copies and no turn_index dropout")
+    ap.add_argument("--dropout-only", action="store_true",
+                    help="no noisy copies, but keep the turn_index dropout")
     ap.add_argument("--fast", action="store_true",
                     help="skip the folds; confidence falls back to the action probability")
     ap.add_argument("--jobs", type=int, default=4)
@@ -203,7 +206,8 @@ def main(argv=None) -> int:
     out.mkdir(parents=True, exist_ok=True)
 
     base = load_jsonl(args.train)
-    rows = base if args.no_augment else with_augmentation(base)
+    augment_rows = not (args.no_augment or args.dropout_only)
+    rows = with_augmentation(base) if augment_rows else base
     cleaned, feats = prepare(rows, blocks, drop_turn_index=not args.no_augment)
     vec = Vectoriser.fit(feats, MIN_DF, MAX_FEATURES, BLOCK_WEIGHTS)
     X, unseen = to_matrix(vec, feats)
@@ -322,7 +326,7 @@ def main(argv=None) -> int:
     import sklearn
     meta = {"classes": classes, "temperature": temperature, "block_weights": BLOCK_WEIGHTS,
             "blocks": list(vec.blocks), "seed": SEED, "c_svm": C_SVM,
-            "augmented": not args.no_augment, "train_rows": len(rows),
+            "augmented": augment_rows, "train_rows": len(rows),
             "n_features": vec.n_features,
             "libraries": {"numpy": np.__version__, "scikit-learn": sklearn.__version__},
             "train_sha256": hashlib.sha256(Path(args.train).read_bytes()).hexdigest()}

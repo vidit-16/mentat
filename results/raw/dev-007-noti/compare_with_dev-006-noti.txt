@@ -1,0 +1,9 @@
+2300 rows
+                                   dev-006-noti   dev-007-noti
+action accuracy                          0.8222         0.8183
+top-70% error ratio                      0.3109         0.2973
+accuracy of 85% most confident           0.9043         0.9059
+95% interval of the difference (second - first):
+  action accuracy                -0.0100 to +0.0017
+  top-70% error ratio            -0.0406 to +0.0185
+  accuracy of 85% most confident -0.0036 to +0.0072

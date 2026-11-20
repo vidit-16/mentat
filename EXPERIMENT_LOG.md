@@ -437,3 +437,38 @@ intent 0.7204, action 0.8217, ratio 0.2821, the same as the laptop; hostile 99 o
 (750 requests/s), no errors. Labels and routing match dev-006 exactly; 18 confidences differ
 in the sixth decimal, as before between this CPU and the laptop. This is now the submitted
 run; the artifact is in `results/raw/ci-44775973227/`.
+
+## 2026-11-20 — Augmentation without the noisy copies (`train-004`, `dev-007`)
+
+Open since 17 November: the shipped model has two training changes at once, noisy copies of
+20% of rows and `turn_index` removed from 15% of rows, and the copies showed no effect. This
+run keeps the dropout and drops the copies (`--dropout-only`, new option). 20,000 rows, 76,873
+features (93,441 with copies), 6.7 minutes. The model is not committed; the command rebuilds it.
+
+Dev, through the same pipeline, with and without `turn_index` on the requests:
+
+| | shipped (dev-006) | no copies (dev-007) | shipped, no turn_index | no copies, no turn_index |
+|---|---|---|---|---|
+| intent accuracy | 0.7204 | 0.7252 | 0.7217 | 0.7217 |
+| action accuracy | 0.8217 | 0.8243 | 0.8222 | 0.8183 |
+| macro-F1 | 0.6895 | 0.6934 | 0.6869 | 0.6889 |
+| clean-to-noisy gap | 0.0327 | 0.0280 | 0.0370 | 0.0363 |
+| top-70% error ratio | 0.2821 | 0.2937 | 0.3110 | 0.2972 |
+| sent to a person | 16.5% | 14.5% | 15.3% | 14.5% |
+| right when automated | 0.9084 | 0.9023 | 0.9035 | 0.8978 |
+
+The two routing rows are not comparable as they stand: each model sets its own threshold
+for 90% out of fold, so they automate different shares. At a matched share (the 85% most
+confident rows) the two are right 0.9064 and 0.9084 of the time.
+
+`scripts/compare_runs.py` resamples the 2,300 rows 1,000 times, paired. Action accuracy
+difference -0.003 to +0.009, ratio -0.026 to +0.035, accuracy of the most confident 85%
+-0.003 to +0.007; without `turn_index` likewise. Every interval contains zero.
+
+Hinglish [hinglish-003]: wrong and automated 168 clean, 165 with the published rewrite; the
+signal fix carries over.
+
+Conclusion: the noisy copies do nothing measurable either way. I kept the shipped model.
+The variant is a little simpler, but switching would mean a new model version, another full
+CI run and new numbers everywhere, for a difference I cannot tell from noise. If I were
+training again from scratch I would drop the copies.

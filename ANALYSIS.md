@@ -66,7 +66,10 @@ What moved nothing, or went the wrong way:
   replies whose meaning comes from the rest of the context. Left in because later blocks
   recover the loss; removing them is an open experiment.
 - **Augmentation** (noisy copies of 20% of training rows): no measurable change. Action
-  0.8252 → 0.8226, within noise.
+  0.8252 → 0.8226, within noise. Rechecked against a model with the same `turn_index`
+  dropout but no noisy copies [train-004, dev-007]: action 0.8217 vs 0.8243, gap 0.0327 vs
+  0.0280, top-70% ratio 0.282 vs 0.294; every paired 95% interval contains zero. Without
+  `turn_index` the two also tie. Augmentation neither helps nor hurts on this data.
 - **The policy gate** changed 2 answers' correctness out of 2,300 (section 5 of
   `DECISIONS.md` has why that is the point).
 - **The LLM re-ranker** [llm-001] made intent worse on the rows it was meant to help: 0.56 →

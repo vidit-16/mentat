@@ -829,6 +829,146 @@
     "gold_policy_violation_rate": 0.0883,
     "grader_version": "2.1"
    }
+  },
+  {
+   "run_id": "dev-006-noti",
+   "date": "2026-11-20",
+   "seed": 20261117,
+   "model": "train-003 (version eb8d8c0896f96f46), policy 2026-11-17.1",
+   "status": "completed",
+   "input_sha256": "0d6502b4bac26bb23fe9108d3933fb1f734410d2540dada00207a8f2ca1e1331",
+   "raw_path": "results/raw/dev-006-noti/predictions.jsonl",
+   "raw_sha256": "f7d2878b3f36bb85d49c8554b2fda1d0563a4199ca480291c3eb770ce7912787",
+   "description": "Shipped model with turn_index removed from every request. Baseline for the train-004 comparison.",
+   "config": {
+    "machine": "Windows laptop, Intel i5-10210U",
+    "via": "in-process",
+    "turn_index": "removed"
+   },
+   "api_calls": 0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0,
+   "metrics": {
+    "intent_accuracy": 0.7217,
+    "macro_f1": 0.6869,
+    "action_accuracy": 0.8222,
+    "noisy_accuracy": 0.79,
+    "noisy_gap": 0.037,
+    "schema_valid_pct": 100.0,
+    "top70_error_ratio": 0.311,
+    "policy_violation_rate": 0.0757,
+    "gold_policy_violation_rate": 0.0883,
+    "grader_version": "2.1"
+   }
+  },
+  {
+   "run_id": "train-004",
+   "date": "2026-11-20",
+   "seed": 20261117,
+   "model": "LinearSVC, all blocks, turn_index dropout, no noisy copies",
+   "status": "completed",
+   "input_sha256": "9243c4129368a7696526688990edde9ad0243f842f987ec5f1196bfdb89011be",
+   "raw_path": "results/raw/train-004/train.log",
+   "raw_sha256": "ee57a5da1657763d936e8004b2c210a7de791148933859bbabb7d0bd52995807",
+   "description": "Variant to separate augmentation from turn_index dropout (open item from 2026-11-17). Model version 9a6cb56186926a4f, not shipped; its files are not committed and the command rebuilds them.",
+   "config": {
+    "command": "python -m triage.train --dropout-only --out <dir>",
+    "rows": 20000,
+    "features": 76873
+   },
+   "api_calls": 0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  },
+  {
+   "run_id": "dev-007",
+   "date": "2026-11-20",
+   "seed": 20261117,
+   "model": "train-004 (version 9a6cb56186926a4f), policy 2026-11-17.1",
+   "status": "completed",
+   "input_sha256": "0d6502b4bac26bb23fe9108d3933fb1f734410d2540dada00207a8f2ca1e1331",
+   "raw_path": "results/raw/dev-007/predictions.jsonl",
+   "raw_sha256": "40568177f79894e9afd5b36a75f502cda835eeaf100ef6e8af7427fbc501db70",
+   "description": "train-004 on dev. Ties the shipped model: paired 95% intervals of every difference contain zero (compare_with_dev-006.txt).",
+   "config": {
+    "machine": "Windows laptop, Intel i5-10210U",
+    "via": "in-process"
+   },
+   "api_calls": 0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0,
+   "metrics": {
+    "intent_accuracy": 0.7252,
+    "macro_f1": 0.6934,
+    "action_accuracy": 0.8243,
+    "noisy_accuracy": 0.8,
+    "noisy_gap": 0.028,
+    "schema_valid_pct": 100.0,
+    "top70_error_ratio": 0.2937,
+    "policy_violation_rate": 0.0757,
+    "gold_policy_violation_rate": 0.0883,
+    "grader_version": "2.1"
+   }
+  },
+  {
+   "run_id": "dev-007-noti",
+   "date": "2026-11-20",
+   "seed": 20261117,
+   "model": "train-004 (version 9a6cb56186926a4f), policy 2026-11-17.1",
+   "status": "completed",
+   "input_sha256": "0d6502b4bac26bb23fe9108d3933fb1f734410d2540dada00207a8f2ca1e1331",
+   "raw_path": "results/raw/dev-007-noti/predictions.jsonl",
+   "raw_sha256": "f8e014cf254edeab656d29c70db129aaccb8c86416fcac70a867880c026cc8ac",
+   "description": "train-004 with turn_index removed. Ties dev-006-noti.",
+   "config": {
+    "machine": "Windows laptop, Intel i5-10210U",
+    "via": "in-process",
+    "turn_index": "removed"
+   },
+   "api_calls": 0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0,
+   "metrics": {
+    "intent_accuracy": 0.7217,
+    "macro_f1": 0.6889,
+    "action_accuracy": 0.8183,
+    "noisy_accuracy": 0.7867,
+    "noisy_gap": 0.0363,
+    "schema_valid_pct": 100.0,
+    "top70_error_ratio": 0.2972,
+    "policy_violation_rate": 0.0739,
+    "gold_policy_violation_rate": 0.0883,
+    "grader_version": "2.1"
+   }
+  },
+  {
+   "run_id": "hinglish-003",
+   "date": "2026-11-20",
+   "seed": null,
+   "model": "train-004 (version 9a6cb56186926a4f), policy 2026-11-17.1",
+   "status": "completed",
+   "input_sha256": "0d6502b4bac26bb23fe9108d3933fb1f734410d2540dada00207a8f2ca1e1331",
+   "raw_path": "results/raw/hinglish-003/predictions.jsonl",
+   "raw_sha256": "7feb118f18b370289ba6d34bbdb12b6ff2a13994cafa81239a8f1cfdad4ad5cf",
+   "description": "Hinglish slice on train-004. Wrong and automated: clean 168, suffix 165, swaps 165, heavy 160.",
+   "config": {
+    "machine": "Windows laptop, Intel i5-10210U",
+    "rows": 1995,
+    "variants": [
+     "suffix",
+     "swaps",
+     "heavy"
+    ],
+    "script": "scripts/hinglish_slice.py"
+   },
+   "api_calls": 0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
   }
  ]
 }
