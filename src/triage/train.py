@@ -14,6 +14,7 @@ import hashlib
 import json
 import random
 import time
+from collections import Counter
 from pathlib import Path
 
 import numpy as np
@@ -132,6 +133,32 @@ def to_matrix(vec: Vectoriser, feats: list[dict]):
     return X, np.array(unseen)
 
 
+def fold_unseen(feats: list[dict], fold: np.ndarray) -> np.ndarray:
+    """Share of each row's words missing from a word vocabulary fitted without that row's fold.
+
+    The service measures unseen words against the training vocabulary, which never contains
+    the request. Measured against the full vocabulary in training, the signal was almost
+    always 0, and the confidence model learned nothing useful about it (hinglish-001).
+    """
+    out = np.ones(len(feats))
+    for k in np.unique(fold):
+        df = Counter()
+        for i in np.where(fold != k)[0]:
+            df.update(feats[i]["w"].keys())
+        keep = [(f, c) for f, c in df.items() if c >= MIN_DF.get("w", 1)]
+        keep.sort(key=lambda fc: (-fc[1], fc[0]))
+        keep = keep[:MAX_FEATURES.get("w", len(keep))]
+        words = {f for f, _ in keep if " " not in f}
+        for i in np.where(fold == k)[0]:
+            seen = total = 0
+            for feat, count in feats[i]["w"].items():
+                if " " not in feat:
+                    total += count
+                    seen += count if feat in words else 0
+            out[i] = 1.0 - seen / total if total else 1.0
+    return out
+
+
 def fit_head(X, y, classes):
     from sklearn.svm import LinearSVC
     clf = LinearSVC(C=C_SVM, random_state=SEED)
@@ -219,6 +246,9 @@ def main(argv=None) -> int:
         for (h, _, _), (te, scores) in zip(jobs, results):
             oof[h][te] = scores
         print(f"out-of-fold scores done [{time.time() - t0:.0f}s]")
+
+        unseen = fold_unseen(feats, fold)
+        print(f"unseen words, out of fold: mean {unseen.mean():.4f} sd {unseen.std():.4f}")
 
         for h in HEADS:
             y_idx = np.array([classes[h].index(v) for v in labels[h]])

@@ -117,7 +117,10 @@ Readings:
   90% of rows, because the `unseen_words` signal was measured against a vocabulary fitted on
   the same rows during training (mean 0.002) and takes values 7 standard deviations higher
   on Hinglish. 47 rows move from a person to automated, 24 of them wrong; wrong answers
-  sent without a person rise from 160 to 180. Not fixed in the shipped model yet.
+  sent without a person rise from 160 to 180. Fixed in train-003 by measuring the signal
+  out of fold in training too [hinglish-002]: with the same rewrite, wrong answers sent
+  without a person go from 152 to 155, and confidence falls slightly instead of rising.
+  `tests/test_code_mixed.py` fails on the old model and passes on the new one.
 - The hidden noisy slice is generated independently, so these are estimates of type-level
   behaviour, not promises.
 
@@ -163,15 +166,15 @@ rare in training.
 |---|---|---|
 | baseline | 1.0 | ≤ 0.85 |
 | margin only, no confidence model [ablate-001-wcsx] | 0.2735 | |
-| shipped [dev-005-http] | 0.2821 | |
+| shipped [dev-006] | 0.2821 | |
 
 **The confidence model did not beat the raw margin on this ratio.** It buys something else:
 its output is a probability. Out of fold, messages above the 0.565 threshold are right 90% of
-the time; on dev they are right 90.4% of the time. The raw margin has no such meaning, so a
+the time; on dev they are right 90.8% of the time. The raw margin has no such meaning, so a
 threshold on it cannot be explained to the manager.
 
-Routing on dev [dev-005-http]: 15.6% of messages go to a person. Accuracy of the routed
-messages by reason: low confidence 34% (338 messages), policy conflict 27% (70), needs a
+Routing on dev [dev-006]: 16.5% of messages go to a person. Accuracy of the routed
+messages by reason: low confidence 35% (358 messages), policy conflict 27% (70), needs a
 prior step 22% (18), little context 57% (7), two intents 81% (26). The two-intents rule
 routes messages the model mostly gets right; it is kept because a customer with two requests
 needs a person to handle the second one, which the single action cannot express.

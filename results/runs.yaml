@@ -79,7 +79,7 @@ runs:
     status: completed
     input: train.jsonl.gz
     raw_path: results/raw/train-002/train.log
-    description: "Shipped model. Fold fits moved to threads. Out-of-fold report in oof_report.json."
+    description: "Shipped until 2026-11-20. Fold fits moved to threads. Out-of-fold report in oof_report.json."
   - run_id: dev-002
     date: "2026-11-17"
     seed: 20261117
@@ -218,3 +218,26 @@ runs:
     raw_path: results/raw/hinglish-001/predictions.jsonl
     config: {machine: "Windows laptop, Intel i5-10210U", rows: 1995, variants: [suffix, swaps, heavy], script: scripts/hinglish_slice.py}
     description: "Published code_mixed rewrite applied to every dev row, compared with the clean row. Action accuracy unchanged; confidence rises through the unseen_words signal, so 47 rows move from a person to automated (24 wrong). Breakdown by signal in confidence_breakdown.txt."
+  - run_id: train-003
+    date: "2026-11-20"
+    seed: 20261117
+    model: "LinearSVC, all blocks, augmented; unseen_words measured out of fold"
+    status: completed
+    input: train.jsonl.gz
+    raw_path: results/raw/train-003/train.log
+    description: "Shipped model (version eb8d8c0896f96f46). Fixes the unseen_words train/serve mismatch found in hinglish-001. Classifier heads identical to train-002; only confidence.json and oof_report.json change."
+  - run_id: dev-006
+    date: "2026-11-20"
+    seed: 20261117
+    model: "train-003 (version eb8d8c0896f96f46), policy 2026-11-17.1"
+    status: completed
+    raw_path: results/raw/dev-006/predictions.jsonl
+    config: {machine: "Windows laptop, Intel i5-10210U", via: in-process}
+    description: "Development run with the retrained confidence model. Grader metrics unchanged; 16.5% sent to a person (was 15.6%), automated action accuracy 0.9084 (was 0.9042)."
+  - run_id: hinglish-002
+    date: "2026-11-20"
+    model: "train-003 (version eb8d8c0896f96f46), policy 2026-11-17.1"
+    status: completed
+    raw_path: results/raw/hinglish-002/predictions.jsonl
+    config: {machine: "Windows laptop, Intel i5-10210U", rows: 1995, variants: [suffix, swaps, heavy], script: scripts/hinglish_slice.py}
+    description: "hinglish-001 repeated on train-003. With the published rewrite, wrong answers sent without a person go 152 -> 155 (was 160 -> 180); mean confidence falls 0.834 -> 0.829 (was rising 0.836 -> 0.849)."

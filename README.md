@@ -24,8 +24,8 @@ test split is scored by the reviewers.
 | Schema valid, incl. hostile | 100% | 100% | 100% |
 | Top-70% error ratio | 0.2821 | ≤ 0.85 | 1.0 |
 | Policy violation rate | 0.0778 | reported (gold: 0.0883) | 0.1404 |
-| Sent to a person | 15.6% | — | — |
-| Action accuracy when not sent to a person | 0.9042 | — | — |
+| Sent to a person | 16.5% | — | — |
+| Action accuracy when not sent to a person | 0.9084 | — | — |
 | Hostile pack (99 requests: 9 published, 68 extended, 22 transport) | 99 passed | zero failures | — |
 | p95 latency, concurrency 8 / 32 | 44 ms / 45 ms | reported | — |
 | API cost per message | $0 | reported | $0 |
@@ -55,7 +55,7 @@ request -> size/time limits -> JSON and shape checks -> Unicode cleaning, per-tu
   `policy_conflict`. Edit, run `scripts/reproduce.sh policy-check`, restart. See RUNBOOK.md.
 - **Confidence** comes from a small model trained on out-of-fold predictions of the whole
   pipeline, not from any model's own word. Above the routing threshold (0.565) messages were
-  right 90% of the time out of fold and 90.4% on dev.
+  right 90% of the time out of fold and 90.8% on dev.
 - **Injection** has nothing to talk to. The decision path counts words; it cannot follow
   instructions. Trust comes from the `speaker` field, never from the text: a customer cannot
   write a system step. The action comes from the rule table, after the model. Injection-like

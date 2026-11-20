@@ -262,7 +262,7 @@
    "input_sha256": "9243c4129368a7696526688990edde9ad0243f842f987ec5f1196bfdb89011be",
    "raw_path": "results/raw/train-002/train.log",
    "raw_sha256": "202e3a69712db07d77f2ac30427ea5ed32714c0820e30aac7b94833caaa2a20e",
-   "description": "Shipped model. Fold fits moved to threads. Out-of-fold report in oof_report.json.",
+   "description": "Shipped until 2026-11-20. Fold fits moved to threads. Out-of-fold report in oof_report.json.",
    "config": {},
    "api_calls": 0,
    "input_tokens": 0,
@@ -711,6 +711,78 @@
    "raw_path": "results/raw/hinglish-001/predictions.jsonl",
    "raw_sha256": "fee98725909bda3a9dcc3cdc6e940860d0aea17eedc36d75f78c69a58c34c965",
    "description": "Published code_mixed rewrite applied to every dev row, compared with the clean row. Action accuracy unchanged; confidence rises through the unseen_words signal, so 47 rows move from a person to automated (24 wrong). Breakdown by signal in confidence_breakdown.txt.",
+   "config": {
+    "machine": "Windows laptop, Intel i5-10210U",
+    "rows": 1995,
+    "variants": [
+     "suffix",
+     "swaps",
+     "heavy"
+    ],
+    "script": "scripts/hinglish_slice.py"
+   },
+   "api_calls": 0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  },
+  {
+   "run_id": "train-003",
+   "date": "2026-11-20",
+   "seed": 20261117,
+   "model": "LinearSVC, all blocks, augmented; unseen_words measured out of fold",
+   "status": "completed",
+   "input_sha256": "9243c4129368a7696526688990edde9ad0243f842f987ec5f1196bfdb89011be",
+   "raw_path": "results/raw/train-003/train.log",
+   "raw_sha256": "1334f6df7b480b777b124a0858ee057a0b38258cd2af518b3baba22ba50b6b9d",
+   "description": "Shipped model (version eb8d8c0896f96f46). Fixes the unseen_words train/serve mismatch found in hinglish-001. Classifier heads identical to train-002; only confidence.json and oof_report.json change.",
+   "config": {},
+   "api_calls": 0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  },
+  {
+   "run_id": "dev-006",
+   "date": "2026-11-20",
+   "seed": 20261117,
+   "model": "train-003 (version eb8d8c0896f96f46), policy 2026-11-17.1",
+   "status": "completed",
+   "input_sha256": "0d6502b4bac26bb23fe9108d3933fb1f734410d2540dada00207a8f2ca1e1331",
+   "raw_path": "results/raw/dev-006/predictions.jsonl",
+   "raw_sha256": "6130cf4285e4a5687e5052127664fb7ac7a7add8f607ecf6767507e814597712",
+   "description": "Development run with the retrained confidence model. Grader metrics unchanged; 16.5% sent to a person (was 15.6%), automated action accuracy 0.9084 (was 0.9042).",
+   "config": {
+    "machine": "Windows laptop, Intel i5-10210U",
+    "via": "in-process"
+   },
+   "api_calls": 0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0,
+   "metrics": {
+    "intent_accuracy": 0.7204,
+    "macro_f1": 0.6895,
+    "action_accuracy": 0.8217,
+    "noisy_accuracy": 0.7933,
+    "noisy_gap": 0.0327,
+    "schema_valid_pct": 100.0,
+    "top70_error_ratio": 0.2821,
+    "policy_violation_rate": 0.0778,
+    "gold_policy_violation_rate": 0.0883,
+    "grader_version": "2.1"
+   }
+  },
+  {
+   "run_id": "hinglish-002",
+   "date": "2026-11-20",
+   "seed": null,
+   "model": "train-003 (version eb8d8c0896f96f46), policy 2026-11-17.1",
+   "status": "completed",
+   "input_sha256": "0d6502b4bac26bb23fe9108d3933fb1f734410d2540dada00207a8f2ca1e1331",
+   "raw_path": "results/raw/hinglish-002/predictions.jsonl",
+   "raw_sha256": "06e0c1e65d56117c81ede905e0eb808d4603b8d0a9753866892d49d365876dfb",
+   "description": "hinglish-001 repeated on train-003. With the published rewrite, wrong answers sent without a person go 152 -> 155 (was 160 -> 180); mean confidence falls 0.834 -> 0.829 (was rising 0.836 -> 0.849).",
    "config": {
     "machine": "Windows laptop, Intel i5-10210U",
     "rows": 1995,

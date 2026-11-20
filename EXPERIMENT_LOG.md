@@ -396,3 +396,36 @@ Not fixed yet. The fix is to measure `unseen_words` in training the same way the
 does, against a vocabulary that has not seen the row (fit it per fold), or drop the signal.
 Either needs a retrain and a new model version, so every result reruns.
 
+## 2026-11-20 — Fix for `unseen_words`; retrain (`train-003`, `dev-006`, `hinglish-002`)
+
+`src/triage/train.py` now measures `unseen_words` for each training row against a word
+vocabulary fitted without that row's fold (same 5 folds, same `min_df`), which is how the
+service sees a new message. Out of fold the signal averages 0.0065 (sd 0.015), against
+0.0018 (sd 0.008) before; clean dev averages 0.0062, so training and serving now agree. Its
+fitted weight went from +0.027 to -0.008: more unknown words now means slightly less
+confidence, the direction that makes sense.
+
+Retrain took 6 minutes. The three classifier heads, the vocabulary and the temperatures are
+byte for byte the same as train-002; only `confidence.json` and `oof_report.json` changed.
+New model version `eb8d8c0896f96f46`.
+
+Out of fold: top-70% ratio 0.3076 (was 0.3066), threshold 0.5663 (was 0.5652), 84.7% automated
+at 90% accuracy. Dev [dev-006]: grader metrics unchanged (intent 0.7204, action 0.8217,
+ratio 0.2821); sent to a person 16.5% (was 15.6%); right when automated 0.9084 (was 0.9042).
+
+Hinglish rerun [hinglish-002], 1,995 rows:
+
+| | clean | suffix | suffix + swaps | heavy |
+|---|---|---|---|---|
+| sent to a person | 15.3% | 15.3% | 15.1% | 15.2% |
+| wrong and automated (rows) | 152 | 155 | 159 | 160 |
+| mean confidence | 0.834 | 0.829 | 0.829 | 0.827 |
+
+Before the fix the same columns read 160 / 180 / 182 / 188 wrong and automated. The signal's
+contribution with the suffix is now -0.03 logit, where it was +0.18.
+
+Added `tests/test_code_mixed.py`: on 400 dev rows the code-mixed rewrite must not raise mean
+confidence by more than 0.002 or drop more than 1% of rows from the human queue. Checked that
+it fails with the old `confidence.json` (mean 0.829 -> 0.844) and passes with the new one.
+118 tests pass.
+

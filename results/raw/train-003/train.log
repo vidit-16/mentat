@@ -1,0 +1,22 @@
+rows 23962 (base 20000) features 93441 [41s]
+fitted intent (96 classes) [102s]
+fitted flow (10 classes) [111s]
+fitted action (30 classes) [126s]
+out-of-fold scores done [331s]
+unseen words, out of fold: mean 0.0065 sd 0.0152
+{
+ "intent_accuracy_raw": 0.7096,
+ "flow_accuracy_raw": 0.8691,
+ "action_accuracy_raw": 0.8264,
+ "rows": 23962,
+ "intent_accuracy_gated": 0.7097,
+ "action_accuracy_gated": 0.8211,
+ "conflict_rate": 0.0291,
+ "held_back_rate": 0.0064,
+ "top70_error_ratio": 0.3076,
+ "threshold": 0.5663,
+ "automated_share_at_threshold": 0.8465,
+ "automated_accuracy_at_threshold": 0.9
+}
+wrote models [347s]
+exit 0

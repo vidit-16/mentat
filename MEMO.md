@@ -17,14 +17,14 @@ live in one file you can edit (`policy/policy.yaml`); no programmer is needed to
 |---|---|
 | Next step right | 82 out of 100 conversations |
 | Problem type right | 72 out of 100 (the misses are mostly near-twins: "wrong size" vs "wrong colour") |
-| Sent to a person | about 16 out of 100 |
+| Sent to a person | about 16 or 17 out of 100 |
 | Next step right when *not* sent to a person | 90 out of 100 |
 | Messy messages (typos, Hinglish, empty, very long) | 79 out of 100, three points below clean ones |
 | Steps outside the procedure | none for the problem type it identified; 8 in 100 measured against the true problem type, because when it misreads the problem it follows the wrong procedure (your agents' own rate: 9 in 100) |
 
-## Why 16 in 100 still reach a person, and why that is right
+## Why 16 or 17 in 100 still reach a person, and why that is right
 
-Most of them (about 14 in 100) are conversations where it is genuinely unsure; it gets only
+Most of them (about 15 in 100) are conversations where it is genuinely unsure; it gets only
 about a third of those right, so a person is needed. The rest are: the model wanted a step
 your procedure does not allow (3 in 100; in a third of those your agents did exactly that
 step, so either the agent deviated or the procedure is missing a step); a refund or account

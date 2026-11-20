@@ -1,0 +1,19 @@
+variant suffix, 1995 rows, model eb8d8c0896f96f46
+signal                  mean clean  mean rewritten  logit change    coef
+unseen_words                0.0062          0.0611       -0.0294  -0.008
+score_margin                1.4019          1.3783       -0.0289  +1.019
+p_action                    0.8230          0.8200       -0.0143  +1.199
+p_flow                      0.8746          0.8689       -0.0058  +0.227
+log_tokens                  0.7983          0.8133       +0.0056  +0.029
+p_margin                    0.7751          0.7709       +0.0056  -0.409
+entropy                     0.6337          0.6502       +0.0046  +0.214
+p_intent                    0.7463          0.7371       -0.0012  +0.042
+blocked                     0.0080          0.0075       +0.0005  -0.077
+action_prior                0.8224          0.8221       -0.0004  +0.091
+conflict                    0.0296          0.0306       +0.0003  +0.056
+n_turns                     0.8802          0.8802       +0.0000  -0.114
+truncated                   0.0000          0.0000       +0.0000  +0.019
+has_system_turn             0.6947          0.6947       +0.0000  -0.006
+odd_characters              0.0000          0.0000       +0.0000  +0.029
+empty_last_customer         0.0000          0.0000       +0.0000  +0.004
+training mean / scale of unseen_words: 0.006505 / 0.015174

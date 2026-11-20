@@ -5,7 +5,7 @@
 | What | Three linear classifiers (intent: 96 classes, flow: 10, action: 30) and a confidence model |
 | Trained on | `reference/train.jsonl.gz`, sha256 `9243c4129368a7696526688990edde9ad0243f842f987ec5f1196bfdb89011be`, plus 3962 noisy copies made by `src/triage/train.py` |
 | Never trained on | `dev.jsonl`, `dev_noisy.jsonl`, `hostile.jsonl`, or any held-out data |
-| Training command | `scripts/reproduce.sh train` (run id train-002, about 19 minutes on a 4-core laptop) |
+| Training command | `scripts/reproduce.sh train` (run id train-003, about 6 minutes on a 4-core laptop) |
 | Seed | 20261117 |
 | Libraries | numpy 2.5.5, scikit-learn 1.9.1 (training only) |
 | Features | 93,441 sparse features in blocks w, c, s, x (see `src/triage/features.py`) |
@@ -15,8 +15,12 @@
 
 Out-of-fold results on the training data (5 folds grouped by conversation):
 intent 0.7097, action after the policy gate 0.8211,
-top-70% error ratio 0.3066, routing threshold 0.5652 which automates
+top-70% error ratio 0.3076, routing threshold 0.5663 which automates
 84.7% of messages at 90% accuracy.
+
+train-003 differs from train-002 only in the confidence model: `unseen_words` is now measured
+out of fold, as the service measures it (EXPERIMENT_LOG.md, 2026-11-20). The three
+classifier heads are byte for byte the same.
 
 `confidence.json` also holds the confidence caps applied after the model (policy conflict,
 injection pattern, odd characters, little context). The `little_context` cap was added after
