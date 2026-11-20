@@ -208,9 +208,8 @@ runs:
     model: "train-002 (version 2de59e320f72ca21), policy 2026-11-17.1"
     status: completed
     raw_path: results/raw/ci-44771488788/raw/eval-20261120T161545Z/predictions.jsonl
-    submitted: true
     config: {machine: "GitHub Actions ubuntu-24.04, 2 vCPU, Python 3.12.3, AMD EPYC 9V45", commit: bc9f9aa60f030f44c2f717daddee48c52d2983c1, workers: 2}
-    description: "Submitted run: scripts/reproduce.sh all on a clean Linux VM, on the split history. 117 tests passed; evaluation through HTTP; hostile 99 of 99; load test at concurrency 8 and 32. Same labels and metrics as ci-44135706221; 22 of 2,300 confidences differ by 0.000001 (different CPU). Source of results/dev_predictions.jsonl, noisy_predictions.jsonl, hostile_results.jsonl and latency_bench.json."
+    description: "Submitted run: scripts/reproduce.sh all on a clean Linux VM, on the split history. 117 tests passed; evaluation through HTTP; hostile 99 of 99; load test at concurrency 8 and 32. Same labels and metrics as ci-44135706221; 22 of 2,300 confidences differ by 0.000001 (different CPU). Was the submitted run until train-003."
   - run_id: hinglish-001
     date: "2026-11-20"
     model: "train-002 (version 2de59e320f72ca21), policy 2026-11-17.1"
@@ -241,3 +240,11 @@ runs:
     raw_path: results/raw/hinglish-002/predictions.jsonl
     config: {machine: "Windows laptop, Intel i5-10210U", rows: 1995, variants: [suffix, swaps, heavy], script: scripts/hinglish_slice.py}
     description: "hinglish-001 repeated on train-003. With the published rewrite, wrong answers sent without a person go 152 -> 155 (was 160 -> 180); mean confidence falls 0.834 -> 0.829 (was rising 0.836 -> 0.849)."
+  - run_id: ci-44775973227
+    date: "2026-11-20"
+    model: "train-003 (version eb8d8c0896f96f46), policy 2026-11-17.1"
+    status: completed
+    raw_path: results/raw/ci-44775973227/raw/eval-20261120T164230Z/predictions.jsonl
+    submitted: true
+    config: {machine: "GitHub Actions ubuntu-24.04, 2 vCPU, Python 3.12.3, AMD EPYC 9V45", commit: 58484492acfd845f858f98c6ad7406cb772e1a9c, workers: 2}
+    description: "Submitted run: scripts/reproduce.sh all on a clean Linux VM with the train-003 model. 118 tests passed; evaluation through HTTP; hostile 99 of 99; load test at concurrency 8 and 32. Labels and routing identical to dev-006 on the laptop; 18 confidences differ by 0.000001. Source of results/dev_predictions.jsonl, noisy_predictions.jsonl, hostile_results.jsonl and latency_bench.json."

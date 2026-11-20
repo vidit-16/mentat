@@ -429,3 +429,11 @@ confidence by more than 0.002 or drop more than 1% of rows from the human queue.
 it fails with the old `confidence.json` (mean 0.829 -> 0.844) and passes with the new one.
 118 tests pass.
 
+## 2026-11-20 — Clean-Linux run on the retrained model (`ci-44775973227`)
+
+`scripts/reproduce.sh all` on commit 5848449: 118 tests passed; evaluation through HTTP gives
+intent 0.7204, action 0.8217, ratio 0.2821, the same as the laptop; hostile 99 of 99, slowest
+21 ms; load p95 43.9 ms at concurrency 8 (189 requests/s) and 44.0 ms at concurrency 32
+(750 requests/s), no errors. Labels and routing match dev-006 exactly; 18 confidences differ
+in the sixth decimal, as before between this CPU and the laptop. This is now the submitted
+run; the artifact is in `results/raw/ci-44775973227/`.
