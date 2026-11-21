@@ -15,3 +15,4 @@ ci-results/
 !results/raw/**/*.log
 !results/raw/*.log
 .claude/
+.taste-skill/

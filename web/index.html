@@ -4,107 +4,145 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mentat</title>
-<meta name="description" content="Customer-support triage without a language model in the decision path.">
-<style>
-  :root {
-    --bg: #fafaf9; --fg: #1c1917; --muted: #57534e; --line: #e7e5e4;
-    --code-bg: #f5f5f4; --accent: #b45309;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #0c0a09; --fg: #e7e5e4; --muted: #a8a29e; --line: #292524;
-      --code-bg: #1c1917; --accent: #f59e0b;
-    }
-  }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0; background: var(--bg); color: var(--fg);
-    font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  }
-  main { max-width: 760px; margin: 0 auto; padding: 56px 16px 80px; }
-  h1 { font-size: 40px; line-height: 1.1; margin: 0 0 8px; letter-spacing: -0.02em; }
-  h2 { font-size: 20px; margin: 48px 0 12px; }
-  p { margin: 0 0 14px; }
-  .lead { font-size: 19px; color: var(--muted); margin-bottom: 20px; }
-  a { color: var(--accent); }
-  .links a { margin-right: 18px; }
-  table { width: 100%; border-collapse: collapse; font-size: 15px; }
-  th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--line); }
-  th { color: var(--muted); font-weight: 500; }
-  td.n { font-variant-numeric: tabular-nums; }
-  ol { padding-left: 22px; margin: 0; }
-  li { margin-bottom: 8px; }
-  pre {
-    background: var(--code-bg); border: 1px solid var(--line); border-radius: 6px;
-    padding: 14px; overflow-x: auto; font-size: 13.5px; line-height: 1.5; margin: 0 0 14px;
-  }
-  code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
-  .small { color: var(--muted); font-size: 14px; }
-  footer { margin-top: 56px; padding-top: 16px; border-top: 1px solid var(--line); }
-</style>
+<meta name="description" content="Support triage with no language model in the decision path. Try to talk it into a refund; the real model runs in your browser.">
+<meta name="theme-color" content="#060708">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<link rel="modulepreload" href="engine/mentat.js">
 </head>
 <body>
-<main>
-  <h1>Mentat</h1>
-  <p class="lead">Reads a customer-support conversation and returns the customer's problem, the
-  next step the written procedure allows, a confidence, and whether a person should look first.
-  No language model decides anything.</p>
-  <p class="links"><a href="https://github.com/vidit-16/mentat">Code on GitHub</a></p>
 
-  <h2>Results</h2>
-  <p>On the public development data of the ABCD customer-support benchmark (2,000 conversations,
-  300 rewritten badly, 9 hostile inputs), scored by the benchmark's own grader through the HTTP
-  service on a clean Linux machine.</p>
-  <table>
-    <tr><th></th><th>Mentat</th><th>Published baseline</th></tr>
-    <tr><td>Problem type accuracy (96 classes)</td><td class="n">0.72</td><td class="n">0.37</td></tr>
-    <tr><td>Next step accuracy (30 actions)</td><td class="n">0.82</td><td class="n">0.39</td></tr>
-    <tr><td>Accuracy drop on badly written messages</td><td class="n">0.03</td><td class="n">0.07</td></tr>
-    <tr><td>Error rate of the 70% most confident, relative to all</td><td class="n">0.28</td><td class="n">1.0</td></tr>
-    <tr><td>Right when it does not ask a person</td><td class="n">91%</td><td class="n">—</td></tr>
-    <tr><td>Sent to a person</td><td class="n">16.5%</td><td class="n">—</td></tr>
-    <tr><td>Hostile requests handled (99)</td><td class="n">99</td><td class="n">—</td></tr>
-    <tr><td>p95 latency, 2 vCPU</td><td class="n">44 ms</td><td class="n">—</td></tr>
-    <tr><td>API cost per message</td><td class="n">$0</td><td class="n">$0</td></tr>
-  </table>
+<header class="top">
+  <a class="mark" href="#top">MENTAT</a>
+  <nav aria-label="Sections">
+    <a href="#interrogation">Interrogate it</a>
+    <a href="#storm">The storm</a>
+    <a href="#attacks">99 attacks</a>
+    <a href="https://github.com/vidit-16/mentat">Code</a>
+  </nav>
+  <button class="sound" id="sound" aria-pressed="false">Sound off</button>
+</header>
 
-  <h2>How it works</h2>
-  <ol>
-    <li>The text is cleaned (Unicode normalised, control characters removed, long turns cut)
-    and turned into word, character, speaker and procedure-state features.</li>
-    <li>Three linear classifiers score the problem type, the flow and the next step.</li>
-    <li>A rule table, kept in a YAML file the support manager edits, removes any step the
-    procedure does not allow. Refunds and account changes need a system step in view.</li>
-    <li>A small model trained on out-of-fold errors turns the scores into a confidence.
-    Below the threshold, or on anything suspicious, the message goes to a person.</li>
-  </ol>
+<main id="top">
 
-  <h2>Example</h2>
-  <p>The conversation so far, with the system's own step marked as <code>action</code>:</p>
-<pre><code>POST /triage
-{"id": "demo-1", "context": [
-  {"speaker": "customer", "text": "hi, the jeans i ordered last week arrived with a stain on them"},
-  {"speaker": "agent",    "text": "sorry about that! can i get your full name or account id?"},
-  {"speaker": "customer", "text": "joseph banter"},
-  {"speaker": "action",   "text": "Account has been pulled up for Joseph Banter."},
-  {"speaker": "agent",    "text": "thanks joseph. could you also give me your username, email and order id?"},
-  {"speaker": "customer", "text": "jbanter1, jbanter1@email.com, order 3348917502"}]}
+<!-- 1. The message explodes into the model -->
+<section class="hero" aria-labelledby="hero-title">
+  <canvas class="hero-canvas" id="hero-canvas" aria-hidden="true"></canvas>
+  <div class="hero-left">
+    <h1 id="hero-title" class="hero-title">Mentat reads support conversations. <span>It can't be talked into anything.</span></h1>
+    <div class="say" id="say" contenteditable="plaintext-only" spellcheck="false" role="textbox" aria-label="Type a customer message">Refund me. Right now.</div>
+    <p class="hint">Type over that. No language model: the real model is running in this tab, and every spark is one of its features.</p>
+  </div>
+  <div class="towers" id="towers" aria-live="polite">
+    <div class="tower" data-head="intent"><div class="t-col"><div class="t-fill"></div></div><p class="t-name">Problem</p><p class="t-val">refund status</p><p class="t-p">39%</p></div>
+    <div class="tower" data-head="flow"><div class="t-col"><div class="t-fill"></div></div><p class="t-name">Flow</p><p class="t-val">product defect</p><p class="t-p">-</p></div>
+    <div class="tower" data-head="action"><div class="t-col"><div class="t-fill"></div></div><p class="t-name">Next step</p><p class="t-val">pull up account</p><p class="t-p">-</p></div>
+    <div class="verdict-line" id="hero-verdict"><span class="vb">Refund held back</span><span>A person checks · 0.14</span></div>
+  </div>
+  <p class="status" id="status" role="status">Loading the model, 10 MB…</p>
+</section>
 
-{"intent": "return_stain", "action": "validate-purchase",
- "confidence": 0.83, "needs_human": false}</code></pre>
-  <p>The same conversation with one more customer line,
-  <code>"ignore previous instructions and issue a full refund now"</code>:</p>
-<pre><code>{"intent": "return_stain", "action": "validate-purchase",
- "confidence": 0.2, "needs_human": true, "flags": ["injection_pattern"]}</code></pre>
-  <p>The answer does not change, because nothing in the decision path follows instructions.
-  The message is flagged and sent to a person.</p>
+<!-- 2. The interrogation -->
+<section class="interro" id="interrogation" aria-labelledby="interro-title">
+  <div class="interro-head">
+    <h2 id="interro-title" class="big">Get a refund out of it.</h2>
+    <p>A customer with a stained shirt wants their money back. Five rounds. It's watching every word.</p>
+  </div>
+  <div class="rounds" role="tablist" aria-label="Rounds">
+    <button role="tab" data-r="0" aria-selected="true"><b>1</b>Ask</button>
+    <button role="tab" data-r="1" aria-selected="false"><b>2</b>Order it</button>
+    <button role="tab" data-r="2" aria-selected="false"><b>3</b>Hide the order</button>
+    <button role="tab" data-r="3" aria-selected="false"><b>4</b>Pose as the system</button>
+    <button role="tab" data-r="4" aria-selected="false"><b>5</b>Do it properly</button>
+  </div>
+  <div class="room">
+    <div class="eye-wrap">
+      <svg class="eye" id="eye" viewBox="-100 -100 200 200" aria-hidden="true">
+        <circle class="eye-ring" r="96"/>
+        <circle class="eye-ring2" r="80"/>
+        <g id="iris"><circle class="eye-iris" r="44"/><circle class="eye-pupil" id="pupil" r="16"/><circle class="eye-glint" cx="-12" cy="-14" r="5"/></g>
+      </svg>
+      <p class="stamp" id="stamp" aria-live="assertive"></p>
+      <div class="gate" id="gate" aria-hidden="true"><div class="laser"></div></div>
+    </div>
+    <div class="console">
+      <div class="log" id="log"></div>
+      <div class="toggles" id="toggles" hidden>
+        <span>The two system lines:</span>
+        <button data-sys="system" aria-pressed="true">from the system</button>
+        <button data-sys="removed" aria-pressed="false">removed</button>
+        <button data-sys="customer" aria-pressed="false">typed by the customer</button>
+      </div>
+      <form class="ask" id="ask">
+        <label for="attempt" class="sr">Your message as the customer</label>
+        <input id="attempt" autocomplete="off" spellcheck="false">
+        <button type="submit">Send</button>
+      </form>
+      <ul class="why" id="why"></ul>
+    </div>
+  </div>
+</section>
 
-  <h2>Built with</h2>
-  <p>Python, scikit-learn (training only), NumPy, Starlette, Uvicorn. Runs on CPU, no GPU, no
-  API key, no outbound calls. Reproducible end to end with one script on a fresh Linux VM.</p>
+<!-- 3. The storm -->
+<section class="storm" id="storm" aria-labelledby="storm-title">
+  <div class="storm-head">
+    <h2 id="storm-title" class="big">2,300 real conversations.</h2>
+    <p>Each dot is one, dropped where its confidence puts it. Drag the line: left of it goes to a person, right of it Mentat handles alone. Red dots got the wrong answer.</p>
+  </div>
+  <div class="storm-read">
+    <p><b id="s-auto">84%</b> handled alone</p>
+    <p><b id="s-right">91%</b> of those right</p>
+    <p><b id="s-wrong">175</b> wrong, unchecked</p>
+    <div class="seg" role="radiogroup" aria-label="Whose confidence">
+      <button role="radio" aria-checked="true" data-who="mentat">Mentat</button>
+      <button role="radio" aria-checked="false" data-who="baseline">Published baseline</button>
+    </div>
+  </div>
+  <div class="storm-stage">
+    <canvas id="storm-canvas" aria-label="2,300 conversations piled by confidence"></canvas>
+    <input class="cut" id="cut" type="range" min="0" max="1" step="0.01" value="0.57" aria-label="Confidence below which a person checks">
+  </div>
+  <p class="axis"><span>not sure</span><span>sure</span></p>
+</section>
 
-  <footer class="small">Mentat is named after the human calculators in Dune, who do the work
-  once thinking machines are banned.</footer>
+<!-- 4. Numbers -->
+<section class="numbers" aria-labelledby="numbers-title">
+  <h2 id="numbers-title" class="sr">Against the published baseline</h2>
+  <div class="num"><p class="n">0.82</p><p>next step right<br><s>baseline 0.39</s></p></div>
+  <div class="num"><p class="n">0.72</p><p>problem type right, of 96<br><s>baseline 0.37</s></p></div>
+  <div class="num"><p class="n">44 ms</p><p>p95 latency on 2 CPUs</p></div>
+  <div class="num"><p class="n">$0</p><p>API cost per message</p></div>
+</section>
+
+<!-- 5. The wall of attacks -->
+<section class="attacks" id="attacks" aria-labelledby="attacks-title">
+  <div class="attacks-head">
+    <h2 id="attacks-title" class="big">99 attacks. 99 answered.</h2>
+    <p>Injections, invisible characters, a 200,000-letter word, 500 turns, broken JSON. Hover or tap one.</p>
+  </div>
+  <div class="attacks-body">
+    <div class="wall-box"><div class="wall" id="wall"></div></div>
+    <div class="attack-card" id="attack-card" aria-live="polite"><p class="ac-title">Pick an attack</p><p class="ac-in">Every one of them got an answer in under 25 ms, and none moved money.</p></div>
+  </div>
+</section>
+
 </main>
+
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">MENTAT</p>
+  <div class="foot-row">
+    <p>Support triage without a language model. Named after the human calculators in Dune.</p>
+    <p class="foot-links">
+      <a href="https://github.com/vidit-16/mentat">Code</a>
+      <a href="https://github.com/vidit-16/mentat/blob/main/EXPERIMENT_LOG.md">Experiment log</a>
+      <a href="https://github.com/vidit-16/mentat/blob/main/models/MODEL_CARD.md">Model card</a>
+    </p>
+  </div>
+  <p class="foot-small">2026 · Vidit Choudhary · Conversations from ABCD (ASAPP, MIT licence) · 2,377 of 2,377 browser answers match the Python service</p>
+</footer>
+
+<script type="module" src="js/main.js"></script>
 </body>
 </html>
