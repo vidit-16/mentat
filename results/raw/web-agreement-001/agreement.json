@@ -1,0 +1,13 @@
+{
+ "model_version": "eb8d8c0896f96f46",
+ "rows": 2377,
+ "agree": 2377,
+ "disagree": 0,
+ "max_confidence_diff": 0.0000010000000000287557,
+ "tolerance": 0.00001,
+ "load_ms": 371,
+ "mean_ms": 0.905,
+ "max_ms": 34.2,
+ "node": "v24.19.0",
+ "mismatches": []
+}

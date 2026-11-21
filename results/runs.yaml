@@ -322,3 +322,10 @@ runs:
     raw_path: results/raw/train-timing-44779509906/train.log
     config: {machine: "GitHub Actions ubuntu-24.04, 2 vCPU, Intel Xeon 6975P-C", workflow: .github/workflows/train-timing.yml}
     description: "scripts/reproduce.sh train on clean Linux: 275 seconds. All weights, idf, vocab.json and meta.json identical to the committed model; confidence.json coefficients differ by up to 0.000001, so the version string differs (2cc1bde6f99da29a vs eb8d8c0896f96f46). Threshold identical."
+  - run_id: web-agreement-001
+    date: "2026-11-22"
+    model: "train-003 (version eb8d8c0896f96f46), policy 2026-11-17.1; browser engine web/engine"
+    status: completed
+    raw_path: results/raw/web-agreement-001/agreement.json
+    config: {machine: "Windows laptop, Intel i5-10210U", runtime: "Node v24.19.0", rows: 2377, confidence_tolerance: 0.00001}
+    description: "JavaScript port of the pipeline against the Python service on every published row plus the 68 extended hostile envelopes. 2,377 of 2,377 agree on every field; 88 confidences differ by 0.000001 (float32 against float64 sums). Mean 0.9 ms per request in Node."

@@ -1063,6 +1063,27 @@
    "input_tokens": 0,
    "output_tokens": 0,
    "cost_usd": 0.0
+  },
+  {
+   "run_id": "web-agreement-001",
+   "date": "2026-11-22",
+   "seed": null,
+   "model": "train-003 (version eb8d8c0896f96f46), policy 2026-11-17.1; browser engine web/engine",
+   "status": "completed",
+   "input_sha256": "0d6502b4bac26bb23fe9108d3933fb1f734410d2540dada00207a8f2ca1e1331",
+   "raw_path": "results/raw/web-agreement-001/agreement.json",
+   "raw_sha256": "043d9d07f03ebb794adf579ee044d314ed687b34e7a1661da25cf0f82035b10d",
+   "description": "JavaScript port of the pipeline against the Python service on every published row plus the 68 extended hostile envelopes. 2,377 of 2,377 agree on every field; 88 confidences differ by 0.000001 (float32 against float64 sums). Mean 0.9 ms per request in Node.",
+   "config": {
+    "machine": "Windows laptop, Intel i5-10210U",
+    "runtime": "Node v24.19.0",
+    "rows": 2377,
+    "confidence_tolerance": 1e-05
+   },
+   "api_calls": 0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
   }
  ]
 }

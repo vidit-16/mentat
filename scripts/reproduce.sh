@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# Reproduce the OP-06 submission on a plain Linux machine. No GPU, no API key.
+# Reproduce Mentat on a plain Linux machine. No GPU, no API key.
 #
 #   scripts/reproduce.sh setup         create .venv and install pinned dependencies
 #   scripts/reproduce.sh check         verify reference files against the release hashes
 #   scripts/reproduce.sh baseline      rerun the published baseline through the official grader
-#   scripts/reproduce.sh train         retrain models/ from reference/train.jsonl.gz (~15 min)
+#   scripts/reproduce.sh train         retrain models/ from reference/train.jsonl.gz (~6 min)
 #   scripts/reproduce.sh serve         run the service in the foreground on $PORT (blocks)
 #   scripts/reproduce.sh start | stop  run the service in the background (pid in .service.pid)
 #   scripts/reproduce.sh test          unit, invariant, policy-change, fuzz and hostile tests
@@ -12,6 +12,8 @@
 #   scripts/reproduce.sh hostile       send the hostile pack to the HTTP service
 #   scripts/reproduce.sh bench         load test at concurrency 8 and 32
 #   scripts/reproduce.sh policy-check  validate policy/policy.yaml and show its effect on dev
+#   scripts/reproduce.sh web-check     browser engine (web/engine) against the Python service
+#                                      on 2,377 inputs; needs Node 20+
 #   scripts/reproduce.sh all           setup check test eval hostile bench (uses committed models)
 #
 # Environment: PORT (default 8000), WORKERS (default 2), PYTHON (default python3),
@@ -172,6 +174,26 @@ bench() { need_venv; with_service bench_inner; }
 
 policy_check() { need_venv; "$PY" scripts/policy_check.py "${@}"; }
 
+web_check() {
+  need_venv
+  command -v node >/dev/null || { echo "node not found; web-check needs Node 20+" >&2; exit 1; }
+  local dir="$OUT/raw/web-agreement"
+  mkdir -p "$dir"
+  # The exported files in web/model must come from the committed model and policy.
+  "$PY" - <<'PY'
+import json, sys
+sys.path.insert(0, "src")
+from triage.pipeline import Triage
+t = Triage()
+m = json.load(open("web/model/manifest.json"))
+assert m["model_version"] == t.model.version, (m["model_version"], t.model.version)
+assert m["policy_version"] == t.policy.version, (m["policy_version"], t.policy.version)
+print("web/model matches models/ and policy/:", m["model_version"], m["policy_version"])
+PY
+  "$PY" scripts/web_agreement_ref.py --out "$dir"
+  node scripts/web_agreement.mjs --dir "$dir"
+}
+
 all() { setup; check; test_; eval_; hostile; bench; }
 
 trap 'stop >/dev/null 2>&1 || true' INT TERM
@@ -190,6 +212,7 @@ case "$cmd" in
   hostile) hostile ;;
   bench) bench ;;
   policy-check) policy_check "$@" ;;
+  web-check) web_check ;;
   all) all ;;
   *) sed -n '2,20p' "$0"; exit 2 ;;
 esac

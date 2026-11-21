@@ -516,3 +516,27 @@ but reports a different version. Noted in RUNBOOK.md.
 
 Also fixed two stale lines: the 17 November entry now points to train-004, and the 19-minute
 retraining figure in README.md, RUNBOOK.md and DECISIONS.md is replaced with measured times.
+
+## 2026-11-22 — The pipeline in the browser (`web-agreement-001`)
+
+For the project site, the whole pipeline now also runs in JavaScript (`web/engine/`), one
+module per Python module: text clean-up, event parser, features, scoring, policy gate,
+confidence, routing. It loads the shipped model unchanged: `scripts/export_web_model.py`
+writes the same float16 weights, rearranged one row per feature and gzipped (10 MB), plus
+the vocabulary, idf, biases, confidence model and the policy table resolved to label lists.
+
+Python's regular expressions are Unicode-aware where JavaScript's are not (`\w`, `\d`,
+``), and Python indexes strings by code point; the port spells these out.
+
+Agreement test: `scripts/web_agreement_ref.py` writes the Python service's answers for all
+2,309 published rows and the 68 extended hostile envelopes; `scripts/web_agreement.mjs` runs
+the JavaScript engine on the same inputs and compares. First run: 23 disagreements, all the
+same bug (abstentions were missing the `versions` field). After the fix: 2,377 of 2,377 agree
+on intent, action, needs_human, flow, flags, routing reasons, held-back and conflict fields.
+88 confidences differ by 0.000001, the last rounded digit: Python sums float32 values, the
+port sums in float64. Same size of difference as between two CPUs in CI.
+
+In Chrome the model loads in 0.4 s from a local server; the demo conversation gives the same
+answer to six decimals (0.831392). In Node a request takes 0.9 ms on average.
+
+`scripts/reproduce.sh web-check` runs the check, and CI now runs it on every push.
