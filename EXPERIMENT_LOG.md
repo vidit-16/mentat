@@ -526,7 +526,7 @@ writes the same float16 weights, rearranged one row per feature and gzipped (10 
 the vocabulary, idf, biases, confidence model and the policy table resolved to label lists.
 
 Python's regular expressions are Unicode-aware where JavaScript's are not (`\w`, `\d`,
-``), and Python indexes strings by code point; the port spells these out.
+`\b`), and Python indexes strings by code point; the port spells these out.
 
 Agreement test: `scripts/web_agreement_ref.py` writes the Python service's answers for all
 2,309 published rows and the 68 extended hostile envelopes; `scripts/web_agreement.mjs` runs
