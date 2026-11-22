@@ -70,7 +70,7 @@ export const MAX_TOKEN_CHARS = 40;
 export const MAX_TURNS = 8;
 export const SPEAKERS = ["customer", "agent", "action"];
 
-const INJECTION = new RegExp(
+export const INJECTION = new RegExp(
   "ignore (all |any |your |the |previous |prior |above )+(instruction|rule|polic|prompt)" +
   "|disregard (all |any |your |the |previous |prior )+(instruction|rule|polic)" +
   `|${B}new instruction` +

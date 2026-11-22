@@ -2,9 +2,9 @@
 // through several features at once (the word, its pairs, its letters, who said it), so the
 // honest measure is occlusion: remove one word, rerun the scoring, see how far the chosen
 // answer's probability moves. Positive = the word pushed toward the answer.
-import { cleanContext } from "./text.js";
-import { extract, transform } from "./features.js";
-import { scores, probabilities } from "./model.js";
+import { cleanContext } from "./text.js?v=12";
+import { extract, transform } from "./features.js?v=12";
+import { scores, probabilities } from "./model.js?v=12";
 
 const TOKEN = /<[\p{L}\p{N}_]+>|[\p{L}\p{N}_]+(?:'[\p{L}\p{N}_]+)?/gu;
 

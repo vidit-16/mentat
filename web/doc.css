@@ -1,0 +1,74 @@
+/* The report pages (experiment log, model card): long reading in the site's palette,
+   a contents rail like a paper, and a light print version for "Save as PDF". */
+.doc { background: var(--ground); }
+.doc-bar { position: sticky; }
+.pdf { background: var(--sand); color: var(--ground); border: 0; border-radius: var(--r, 8px); padding: 8px 14px; font-weight: 700; font-size: 14px; cursor: pointer; }
+.pdf:hover { background: #ecd09f; }
+.report { display: grid; grid-template-columns: 270px minmax(0, 760px); gap: clamp(28px, 5vw, 80px); justify-content: center; padding: 48px var(--m) 40px; }
+.contents { position: sticky; top: 76px; align-self: start; max-height: calc(100vh - 100px); overflow-y: auto; padding-right: 8px; }
+.contents-title { font-size: 14px; color: var(--muted); margin-bottom: 10px; }
+.contents ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; counter-reset: none; }
+.contents a { display: block; padding: 6px 10px; border-radius: 6px; font-size: 14px; line-height: 1.35; color: var(--muted); text-decoration: none; border-left: 2px solid transparent; }
+.contents a:hover { color: var(--text); background: var(--ground2); }
+.contents a[aria-current] { color: var(--sand); border-left-color: var(--sand); background: var(--ground2); }
+
+.doc-body { font-size: 18px; line-height: 1.65; min-width: 0; }
+.kicker { color: var(--sand); font-weight: 600; font-size: 15px; }
+.doc-body h1 { font-size: clamp(36px, 4.4vw, 60px); font-weight: 850; font-stretch: 112%; line-height: 1.02; letter-spacing: -0.03em; margin: 8px 0 14px; }
+.byline { font-weight: 700; margin-bottom: 10px; }
+.byline a { color: var(--text); text-decoration: none; }
+.byline a:hover { color: var(--blue); }
+.doc-status { color: var(--muted); font-size: 16px; margin-bottom: 30px; }
+.summary { background: var(--ground2); border-radius: var(--r, 8px); padding: 22px 26px; margin-bottom: 30px; }
+.summary h2 { margin-top: 0 !important; }
+.doc-body h2 { font-size: clamp(22px, 2.2vw, 28px); font-weight: 800; font-stretch: 105%; letter-spacing: -0.01em; line-height: 1.2; margin: 56px 0 14px; color: var(--sand); scroll-margin-top: 84px; }
+.doc-body h3 { font-size: 20px; margin: 30px 0 10px; }
+.doc-body p, .doc-body ul, .doc-body ol { margin: 0 0 16px; }
+.doc-body ul, .doc-body ol { padding-left: 24px; }
+.doc-body li { margin-bottom: 6px; }
+.doc-body li ul { margin: 6px 0 0; }
+.doc-body b { color: var(--text); }
+.doc-body a { color: var(--blue); overflow-wrap: anywhere; }
+.doc-body code { font-family: var(--mono); font-size: .84em; background: var(--ground2); padding: 1px 6px; border-radius: 5px; color: var(--sand); overflow-wrap: anywhere; }
+.doc-body hr { border: 0; height: 2px; background: var(--ground3); margin: 40px 0; }
+.doc-body .table { overflow-x: auto; margin: 0 0 20px; background: var(--ground2); border-radius: var(--r, 8px); }
+.doc-body table { border-collapse: collapse; width: 100%; font-size: 15px; }
+.doc-body th, .doc-body td { text-align: left; padding: 10px 14px; vertical-align: top; }
+.doc-body th { color: var(--muted); font-weight: 600; background: var(--ground3); }
+.doc-body tr + tr td { border-top: 1px solid var(--ground3); }
+.doc-body td { font-variant-numeric: tabular-nums; }
+.doc-foot { max-width: 1110px; margin: 0 auto; padding: 30px var(--m) 60px; color: var(--muted); font-size: 15px; }
+.doc-foot a { color: var(--text); }
+.top nav a[aria-current="page"] { color: var(--text); }
+
+@media (max-width: 1000px) {
+  .report { grid-template-columns: minmax(0, 1fr); }
+  .contents { position: static; max-height: none; background: var(--ground2); border-radius: var(--r, 8px); padding: 16px; }
+  .contents ol { max-height: 240px; overflow-y: auto; }
+}
+@media (max-width: 640px) {
+  .doc .top nav { display: flex; gap: 12px; font-size: 14px; }
+  .doc .top nav a:first-child { display: none; }
+  .pdf { display: none; }
+}
+
+/* Save as PDF: a light, paper-like version without the site chrome. */
+@media print {
+  @page { margin: 18mm 16mm; }
+  body.doc, .doc { background: #fff !important; color: #111 !important; }
+  .doc-bar, .contents, .pdf, .doc-foot { display: none !important; }
+  .report { display: block; padding: 0; }
+  .doc-body { font-size: 11pt; line-height: 1.5; color: #111; }
+  .doc-body h1 { color: #111; font-size: 26pt; }
+  .doc-body h2 { color: #6b4e1e; break-after: avoid; margin-top: 20pt; }
+  .kicker { color: #6b4e1e; }
+  .doc-status, .doc-body th { color: #555; }
+  .summary { background: #f4efe4; }
+  .doc-body code { background: #f1ede5; color: #5a4216; }
+  .doc-body .table { background: #fff; overflow: visible; }
+  .doc-body th { background: #f1ede5; }
+  .doc-body tr + tr td { border-top-color: #ddd; }
+  .doc-body a { color: #1d4f7a; }
+  .doc-body b, .byline a { color: #111; }
+  .doc-body table, .doc-body tr { break-inside: avoid; }
+}

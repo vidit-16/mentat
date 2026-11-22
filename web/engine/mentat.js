@@ -1,10 +1,10 @@
 // The whole pipeline: port of src/triage/pipeline.py, confidence.py, envelope.py and
 // respond.py. `handle` returns the same response the Python service returns; `trace` also
 // returns every intermediate step, for the site to show.
-import { cleanContext, SPEAKERS, MAX_TURNS } from "./text.js";
-import { extract, transform } from "./features.js";
-import { loadModel, scores, probabilities } from "./model.js";
-import { bindPolicy, decide, NONE_ACTION } from "./policy.js";
+import { cleanContext, SPEAKERS, MAX_TURNS } from "./text.js?v=12";
+import { extract, transform } from "./features.js?v=12";
+import { loadModel, scores, probabilities } from "./model.js?v=12";
+import { bindPolicy, decide, NONE_ACTION } from "./policy.js?v=12";
 
 const SECOND_INTENT_MIN = 0.20;
 const SECOND_INTENT_RATIO = 0.50;

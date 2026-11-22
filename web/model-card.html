@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mentat: model card · Mentat</title>
+<meta name="theme-color" content="#0b0c10">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css?v=12">
+<link rel="stylesheet" href="doc.css?v=12">
+</head>
+<body class="doc">
+<header class="top doc-bar">
+  <a class="mark" href="index.html">MENTAT</a>
+  <nav aria-label="Pages">
+    <a href="index.html">Home</a>
+    <a href="log.html">Experiment log</a>
+    <a href="model-card.html" aria-current="page">Model card</a>
+  </nav>
+  <button class="pdf" type="button" onclick="window.print()">Save as PDF</button>
+</header>
+<div class="report">
+  <nav class="contents" aria-label="Contents">
+    <p class="contents-title">Contents</p>
+    <ol><li><a href="#the-model">The model</a></li><li><a href="#data-credit">Data credit</a></li></ol>
+  </nav>
+  <article class="doc-body">
+    <p class="kicker">Model card</p>
+    <h1>Mentat: model card</h1>
+    <p class="byline"><a href="https://www.linkedin.com/in/vidit-choudhary">Vidit Choudhary</a></p>
+    <p class="doc-status">The model the site runs: what it is, what it was trained on, how it scores, and its limits.</p>
+    
+    <h2 id="the-model">The model</h2>
+<div class="table"><table><thead><tr><th>What</th><th>Three linear classifiers (intent: 96 classes, flow: 10, action: 30) and a confidence model</th></tr></thead><tbody><tr><td>Trained on</td><td><code>reference/train.jsonl.gz</code>, sha256 <code>9243c4129368a7696526688990edde9ad0243f842f987ec5f1196bfdb89011be</code>, plus 3962 noisy copies made by <code>src/triage/train.py</code></td></tr><tr><td>Never trained on</td><td><code>dev.jsonl</code>, <code>dev_noisy.jsonl</code>, <code>hostile.jsonl</code>, or any held-out data</td></tr><tr><td>Training command</td><td><code>scripts/reproduce.sh train</code> (run id train-003, about 6 minutes on a 4-core laptop; 4.6 minutes on a 2-vCPU GitHub Actions runner)</td></tr><tr><td>Seed</td><td>20261117</td></tr><tr><td>Libraries</td><td>numpy 2.5.5, scikit-learn 1.9.1 (training only)</td></tr><tr><td>Features</td><td>93,441 sparse features in blocks w, c, s, x (see <code>src/triage/features.py</code>)</td></tr><tr><td>Temperatures</td><td>action 0.33218, flow 0.35914, intent 0.22484</td></tr><tr><td>Files</td><td><code>model.npz</code> (weights as float16, no pickle), <code>vocab.json</code>, <code>meta.json</code>, <code>confidence.json</code></td></tr><tr><td>Version</td><td>first 16 hex of sha256 over the four files; shown by <code>/healthz</code> and in every response</td></tr></tbody></table></div>
+<p>Out-of-fold results on the training data (5 folds grouped by conversation): intent 0.7097, action after the policy gate 0.8211, top-70% error ratio 0.3076, routing threshold 0.5663 which automates 84.7% of messages at 90% accuracy.</p>
+<p>train-003 differs from train-002 only in the confidence model: <code>unseen_words</code> is now measured out of fold, as the service measures it (experiment log, 20 November). The three classifier heads are byte for byte the same.</p>
+<p><code>confidence.json</code> also holds the confidence caps applied after the model (policy conflict, injection pattern, odd characters, little context). The <code>little_context</code> cap was added after training (experiment log, 17 November, hostile-002); retraining writes it by default.</p>
+<p>Known limits: sees only the last 8 turns; trained on one synthetic retailer's procedures; weak on the next step at procedure branch points.</p>
+<h2 id="data-credit">Data credit</h2>
+<p>The conversations, labels and written procedures come from ABCD, the Action-Based Conversations Dataset (<a href="https://github.com/asappresearch/abcd">https://github.com/asappresearch/abcd</a>). MIT licence, Copyright (c) ASAPP Inc.</p>
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+  </article>
+</div>
+<footer class="doc-foot"><p>&copy; 2026 <a href="https://www.linkedin.com/in/vidit-choudhary">Vidit Choudhary</a></p></footer>
+<script>
+// Highlight the contents entry for the section being read.
+const links = [...document.querySelectorAll('.contents a')];
+const byId = new Map(links.map((a) => [a.getAttribute('href').slice(1), a]));
+const io = new IntersectionObserver((es) => es.forEach((e) => {
+  if (!e.isIntersecting) return;
+  links.forEach((a) => a.removeAttribute('aria-current'));
+  const a = byId.get(e.target.id); if (a) { a.setAttribute('aria-current', 'true'); a.scrollIntoView({ block: 'nearest' }); }
+}), { rootMargin: '-20% 0px -70% 0px' });
+document.querySelectorAll('.doc-body h2[id]').forEach((h) => io.observe(h));
+</script>
+</body>
+</html>

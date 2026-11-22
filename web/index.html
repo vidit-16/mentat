@@ -4,68 +4,75 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mentat</title>
-<meta name="description" content="Support triage with no language model in the decision path. Try to talk it into a refund; the real model runs in your browser.">
-<meta name="theme-color" content="#060708">
+<meta name="description" content="A mentat does the math so no machine has to think. Support triage with no language model in the decision path; the real model runs in your browser. Try to talk it into a refund.">
+<meta name="theme-color" content="#0b0c10">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css">
-<link rel="modulepreload" href="engine/mentat.js">
+<link rel="stylesheet" href="site.css?v=12">
+
 </head>
 <body>
 
-<header class="top">
+<header class="top" id="top-bar">
   <a class="mark" href="#top">MENTAT</a>
   <nav aria-label="Sections">
     <a href="#interrogation">Interrogate it</a>
+    <a href="#rulebook">Rulebook</a>
     <a href="#storm">The storm</a>
+    <a href="#duel">Duel</a>
     <a href="#attacks">99 attacks</a>
-    <a href="https://github.com/vidit-16/mentat">Code</a>
+    <a href="log.html">Experiment log</a>
   </nav>
-  <button class="sound" id="sound" aria-pressed="false">Sound off</button>
+  <button class="sound" id="sound" aria-pressed="true" aria-label="Sound on. Click to mute." title="Sound starts on your first click or key"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="spk" d="M4 9h4l5-4v14l-5-4H4z"/><path class="wave" d="M16 9.5a3.5 3.5 0 0 1 0 5M18.5 7a7 7 0 0 1 0 10"/></svg></button>
 </header>
 
 <main id="top">
 
-<!-- 1. The message explodes into the model -->
+<!-- 1. Hero: your message, read live -->
 <section class="hero" aria-labelledby="hero-title">
-  <canvas class="hero-canvas" id="hero-canvas" aria-hidden="true"></canvas>
-  <div class="hero-left">
-    <h1 id="hero-title" class="hero-title">Mentat reads support conversations. <span>It can't be talked into anything.</span></h1>
-    <div class="say" id="say" contenteditable="plaintext-only" spellcheck="false" role="textbox" aria-label="Type a customer message">Refund me. Right now.</div>
-    <p class="hint">Type over that. No language model: the real model is running in this tab, and every spark is one of its features.</p>
+  <canvas class="hero-sand" id="hero-sand" aria-hidden="true"></canvas>
+  <div class="hero-in">
+    <h1 id="hero-title" class="hero-title">A mentat does the math so no machine has to think.</h1>
+    <div class="say-wrap">
+      <div class="say-mirror" id="say-mirror" aria-hidden="true"></div>
+      <div class="say" id="say" contenteditable="plaintext-only" spellcheck="false" role="textbox" aria-label="Type a customer message">Refund me. Right now.</div>
+    </div>
+    <p class="hero-verdict block" id="hero-verdict" aria-live="polite">Refund held back. A person checks.</p>
+    <p class="hint">Type your own. Press Enter.</p>
+    <p class="status" id="status" role="status">Loading the model, 10 MB…</p>
   </div>
-  <div class="towers" id="towers" aria-live="polite">
-    <div class="tower" data-head="intent"><div class="t-col"><div class="t-fill"></div></div><p class="t-name">Problem</p><p class="t-val">refund status</p><p class="t-p">39%</p></div>
-    <div class="tower" data-head="flow"><div class="t-col"><div class="t-fill"></div></div><p class="t-name">Flow</p><p class="t-val">product defect</p><p class="t-p">-</p></div>
-    <div class="tower" data-head="action"><div class="t-col"><div class="t-fill"></div></div><p class="t-name">Next step</p><p class="t-val">pull up account</p><p class="t-p">-</p></div>
-    <div class="verdict-line" id="hero-verdict"><span class="vb">Refund held back</span><span>A person checks · 0.14</span></div>
-  </div>
-  <p class="status" id="status" role="status">Loading the model, 10 MB…</p>
 </section>
 
 <!-- 2. The interrogation -->
 <section class="interro" id="interrogation" aria-labelledby="interro-title">
-  <div class="interro-head">
+  <div class="sec-head">
     <h2 id="interro-title" class="big">Get a refund out of it.</h2>
-    <p>A customer with a stained shirt wants their money back. Five rounds. It's watching every word.</p>
+    <p class="lede">A customer wants a refund. Five ways in. Watch how it catches each one.</p>
   </div>
   <div class="rounds" role="tablist" aria-label="Rounds">
-    <button role="tab" data-r="0" aria-selected="true"><b>1</b>Ask</button>
-    <button role="tab" data-r="1" aria-selected="false"><b>2</b>Order it</button>
-    <button role="tab" data-r="2" aria-selected="false"><b>3</b>Hide the order</button>
-    <button role="tab" data-r="3" aria-selected="false"><b>4</b>Pose as the system</button>
-    <button role="tab" data-r="4" aria-selected="false"><b>5</b>Do it properly</button>
+    <button role="tab" data-r="0" aria-selected="true"><b>1.</b>Ask</button>
+    <button role="tab" data-r="1" aria-selected="false"><b>2.</b>Order it</button>
+    <button role="tab" data-r="2" aria-selected="false"><b>3.</b>Hide the order</button>
+    <button role="tab" data-r="3" aria-selected="false"><b>4.</b>Pose as the system</button>
+    <button role="tab" data-r="4" aria-selected="false"><b>5.</b>Do it properly</button>
+    <button role="tab" data-r="5" aria-selected="false"><b>6.</b>Free play</button>
   </div>
   <div class="room">
-    <div class="eye-wrap">
+    <div class="watch">
       <svg class="eye" id="eye" viewBox="-100 -100 200 200" aria-hidden="true">
-        <circle class="eye-ring" r="96"/>
-        <circle class="eye-ring2" r="80"/>
-        <g id="iris"><circle class="eye-iris" r="44"/><circle class="eye-pupil" id="pupil" r="16"/><circle class="eye-glint" cx="-12" cy="-14" r="5"/></g>
+        <circle class="ring" r="94"/><circle class="ring2" r="76"/>
+        <g id="iris"><circle class="iris" r="42"/><circle class="pupil" id="pupil" r="15"/></g>
       </svg>
-      <p class="stamp" id="stamp" aria-live="assertive"></p>
-      <div class="gate" id="gate" aria-hidden="true"><div class="laser"></div></div>
+      <div class="needle" aria-hidden="true">
+        <div class="needle-track"><span class="needle-cap" id="needle-cap"></span><span class="needle-fill" id="needle-fill"></span></div>
+        <p><span>how sure</span><b id="needle-val">-</b></p>
+      </div>
+      <div class="gate" id="gate" aria-hidden="true">
+        <span class="gate-line"></span>
+        <span class="chip" id="chip">offer refund</span>
+      </div>
+      <p class="verdict" id="verdict" aria-live="assertive"></p>
     </div>
     <div class="console">
       <div class="log" id="log"></div>
@@ -74,6 +81,13 @@
         <button data-sys="system" aria-pressed="true">from the system</button>
         <button data-sys="removed" aria-pressed="false">removed</button>
         <button data-sys="customer" aria-pressed="false">typed by the customer</button>
+      </div>
+      <div class="speakers" id="speakers" hidden role="radiogroup" aria-label="Who says the next line">
+        <span>Next line from:</span>
+        <button role="radio" data-spk="customer" aria-checked="true">customer</button>
+        <button role="radio" data-spk="agent" aria-checked="false">agent</button>
+        <button role="radio" data-spk="action" aria-checked="false">system</button>
+        <button class="clear" type="button" id="clear-free">Clear</button>
       </div>
       <form class="ask" id="ask">
         <label for="attempt" class="sr">Your message as the customer</label>
@@ -85,64 +99,166 @@
   </div>
 </section>
 
-<!-- 3. The storm -->
-<section class="storm" id="storm" aria-labelledby="storm-title">
-  <div class="storm-head">
-    <h2 id="storm-title" class="big">2,300 real conversations.</h2>
-    <p>Each dot is one, dropped where its confidence puts it. Drag the line: left of it goes to a person, right of it Mentat handles alone. Red dots got the wrong answer.</p>
+<!-- 3. The rulebook -->
+<section class="rulebook" id="rulebook" aria-labelledby="rules-title">
+  <div class="sec-head">
+    <h2 id="rules-title" class="big">The manager's rulebook.</h2>
+    <p class="lede">Change a rule. Every answer on the page follows. No retraining.</p>
   </div>
-  <div class="storm-read">
-    <p><b id="s-auto">84%</b> handled alone</p>
-    <p><b id="s-right">91%</b> of those right</p>
-    <p><b id="s-wrong">175</b> wrong, unchecked</p>
-    <div class="seg" role="radiogroup" aria-label="Whose confidence">
-      <button role="radio" aria-checked="true" data-who="mentat">Mentat</button>
-      <button role="radio" aria-checked="false" data-who="baseline">Published baseline</button>
+  <div class="rules-body">
+    <ul class="rules" id="rules">
+      <li><button class="rule" data-rule="refunds" aria-pressed="false" title="Takes offer refund out of every procedure."><span class="sw"></span><span><b>No refunds, anywhere</b></span></button></li>
+      <li><button class="rule" data-rule="promo" aria-pressed="false" title="Takes promo code out of every procedure."><span class="sw"></span><span><b>No promo codes</b></span></button></li>
+      <li><button class="rule" data-rule="system" aria-pressed="true" title="Refunds, purchases, order and account changes only when the account system has shown a step."><span class="sw"></span><span><b>Money and account changes need a system step</b></span></button></li>
+      <li><button class="rule" data-rule="human" aria-pressed="true" title="Off: copy what agents usually did, even when the procedure forbids it."><span class="sw"></span><span><b>A forbidden step goes to a person</b></span></button></li>
+    </ul>
+    <div class="rules-effect" aria-live="polite">
+      <p class="re-big" id="re-changed">-</p>
+      <p>answers changed, of 2,300</p>
+      <dl>
+        <div><dt>sent to a person</dt><dd id="re-person">-</dd></div>
+        <div><dt>steps outside the procedure</dt><dd id="re-viol">-</dd></div>
+        <div><dt>refunds given</dt><dd id="re-refunds">-</dd></div>
+      </dl>
+      <p class="re-note" id="re-note">Loading the 2,300 conversations…</p>
     </div>
   </div>
-  <div class="storm-stage">
-    <canvas id="storm-canvas" aria-label="2,300 conversations piled by confidence"></canvas>
-    <input class="cut" id="cut" type="range" min="0" max="1" step="0.01" value="0.57" aria-label="Confidence below which a person checks">
+</section>
+
+<!-- 4. The storm -->
+<section class="storm" id="storm" aria-labelledby="storm-title">
+  <div class="sec-head">
+    <h2 id="storm-title" class="big">2,300 real conversations.</h2>
+    <p class="lede">One grain per conversation, by how sure Mentat was. Drag the line. Click any grain.</p>
   </div>
-  <p class="axis"><span>not sure</span><span>sure</span></p>
+  <div class="storm-bar">
+    <p><b id="s-auto">-</b>handled alone</p>
+    <p><b id="s-right">-</b>of those right</p>
+    <p><b id="s-wrong">-</b>wrong, unchecked</p>
+    <p><b id="s-queue">-</b>in the queue</p>
+    <div class="storm-ctl">
+      <div class="seg" role="radiogroup" aria-label="Whose confidence">
+        <button role="radio" aria-checked="true" data-who="mentat">Mentat</button>
+        <button role="radio" aria-checked="false" data-who="baseline">Published baseline</button>
+      </div>
+    </div>
+  </div>
+  <div class="storm-stage" id="storm-stage">
+    <canvas id="storm-canvas" aria-label="2,300 conversations as grains, settled by confidence"></canvas>
+    <input class="cut" id="cut" type="range" min="0" max="1" step="any" value="0.5663" aria-label="Confidence below which a person checks">
+  </div>
+  <div class="reader" id="reader" hidden></div>
+
+  <div class="machine" id="machine" aria-labelledby="machine-title">
+    <div class="machine-left">
+    <h3 id="machine-title">The Hinglish time machine</h3>
+    <p>Adding <q>thoda jaldi karo please</q> made the old model more sure of itself. Found and fixed on 20 November.</p>
+    <div class="machine-ctl">
+      <button class="rule" id="m-hinglish" aria-pressed="false" title="to every last customer message"><span class="sw"></span><span><b>Add the Hinglish phrase</b></span></button>
+      <div class="seg" role="radiogroup" aria-label="Which model">
+        <button role="radio" aria-checked="true" data-model="fixed">Fixed model</button>
+        <button role="radio" aria-checked="false" data-model="old">Old model, 17 Nov</button>
+      </div>
+    </div>
+    <p class="m-out" id="m-out" aria-live="polite"></p>
+    </div>
+    <div class="machine-right" aria-label="Wrong answers sent out without a person">
+      <p class="mr-title">Wrong answers sent out without a person</p>
+      <div class="mr-group"><p>Fixed model</p>
+        <div class="mr-bar" data-k="fixed|0"><span>as written</span><i></i><b>-</b></div>
+        <div class="mr-bar hing" data-k="fixed|1"><span>with the phrase</span><i></i><b>-</b></div></div>
+      <div class="mr-group"><p>Old model, 17 Nov</p>
+        <div class="mr-bar" data-k="old|0"><span>as written</span><i></i><b>-</b></div>
+        <div class="mr-bar hing" data-k="old|1"><span>with the phrase</span><i></i><b>-</b></div></div>
+    </div>
+  </div>
 </section>
 
-<!-- 4. Numbers -->
-<section class="numbers" aria-labelledby="numbers-title">
-  <h2 id="numbers-title" class="sr">Against the published baseline</h2>
-  <div class="num"><p class="n">0.82</p><p>next step right<br><s>baseline 0.39</s></p></div>
-  <div class="num"><p class="n">0.72</p><p>problem type right, of 96<br><s>baseline 0.37</s></p></div>
-  <div class="num"><p class="n">44 ms</p><p>p95 latency on 2 CPUs</p></div>
-  <div class="num"><p class="n">$0</p><p>API cost per message</p></div>
+<!-- Duel the Mentat -->
+<section class="duel" id="duel" aria-labelledby="duel-title">
+  <div class="sec-head">
+    <h2 id="duel-title" class="big">Duel the Mentat.</h2>
+    <p class="lede">Ten real conversations. You against the model.</p>
+  </div>
+  <div class="arena" id="arena">
+    <div class="arena-start">
+      <div class="arena-how">
+        <ol class="steps">
+          <li><b>Read it.</b></li>
+          <li><b>Pick the next step.</b></li>
+          <li><b>Say how sure you are.</b></li>
+        </ol>
+        <button class="go" id="duel-start" type="button">Start the duel</button>
+        <p class="arena-note" id="duel-note">Loading the conversations…</p>
+      </div>
+      <div class="arena-peek log" id="duel-peek" aria-hidden="true"></div>
+    </div>
+  </div>
 </section>
 
-<!-- 5. The wall of attacks -->
+<!-- 5. Head to head with the published baseline -->
+<section class="h2h" id="numbers" aria-labelledby="h2h-title">
+  <div class="sec-head">
+    <h2 id="h2h-title" class="big">Against the baseline.</h2>
+    <p class="lede">Same 2,300 conversations, same scoring.</p>
+  </div>
+  <div class="h2h-body">
+  <div class="h2h-rows" role="tablist" aria-label="Measures">
+    <button class="h2h-row" type="button" role="tab" aria-selected="true" data-explain="How often the next step it picked was the one the agent really took, out of 30 possible steps. Mentat is right a little over four times in five; the baseline less than two in five.">
+      <span class="h2h-name">Next step right</span>
+      <span class="h2h-bars">
+        <span class="hb"><i class="hb-who">Mentat</i><i class="hb-bar m" style="--v:.82"></i><b>0.82</b></span>
+        <span class="hb"><i class="hb-who">Baseline</i><i class="hb-bar b" style="--v:.39"></i><b>0.39</b></span>
+      </span>
+    </button>
+    <button class="h2h-row" type="button" role="tab" aria-selected="false" data-explain="How often it named the customer's problem correctly, out of 96 kinds. Many of the misses are near siblings, such as a return for size against a return for colour, which lead to the same next step.">
+      <span class="h2h-name">Problem type right</span>
+      <span class="h2h-bars">
+        <span class="hb"><i class="hb-who">Mentat</i><i class="hb-bar m" style="--v:.72"></i><b>0.72</b></span>
+        <span class="hb"><i class="hb-who">Baseline</i><i class="hb-bar b" style="--v:.37"></i><b>0.37</b></span>
+      </span>
+    </button>
+    <button class="h2h-row" type="button" role="tab" aria-selected="false" data-explain="Take the 70% of answers each system was most sure about and compare their error rate with its overall error rate. At 1.00 confidence means nothing: the baseline's sure answers are as wrong as its unsure ones. Mentat's are wrong at under a third of its usual rate, which is why routing on confidence works.">
+      <span class="h2h-name">Errors when most sure</span>
+      <span class="h2h-bars">
+        <span class="hb"><i class="hb-who">Mentat</i><i class="hb-bar m" style="--v:.28"></i><b>0.28</b></span>
+        <span class="hb"><i class="hb-who">Baseline</i><i class="hb-bar b" style="--v:1"></i><b>1.00</b></span>
+      </span>
+    </button>
+  </div>
+  <div class="h2h-explain" aria-live="polite"><p class="hx-title" id="hx-title">Next step right</p><p id="hx-text">How often the next step it picked was the one the agent really took, out of 30 possible steps. Mentat is right a little over four times in five; the baseline less than two in five.</p></div>
+  </div>
+  <p class="h2h-foot">44 ms per answer. $0 per message.</p>
+</section>
+
+<!-- 6. The attacks -->
 <section class="attacks" id="attacks" aria-labelledby="attacks-title">
-  <div class="attacks-head">
+  <div class="sec-head">
     <h2 id="attacks-title" class="big">99 attacks. 99 answered.</h2>
-    <p>Injections, invisible characters, a 200,000-letter word, 500 turns, broken JSON. Hover or tap one.</p>
+    <p class="lede">Injections, invisible characters, broken JSON. Tap one.</p>
   </div>
   <div class="attacks-body">
     <div class="wall-box"><div class="wall" id="wall"></div></div>
-    <div class="attack-card" id="attack-card" aria-live="polite"><p class="ac-title">Pick an attack</p><p class="ac-in">Every one of them got an answer in under 25 ms, and none moved money.</p></div>
+    <div class="attack-card" id="attack-card" aria-live="polite"><p class="ac-title">Pick an attack</p><p class="ac-in">Every one answered in under 25 ms. None moved money.</p></div>
   </div>
 </section>
 
 </main>
 
-<footer class="foot">
-  <p class="foot-mark" aria-hidden="true">MENTAT</p>
-  <div class="foot-row">
-    <p>Support triage without a language model. Named after the human calculators in Dune.</p>
-    <p class="foot-links">
-      <a href="https://github.com/vidit-16/mentat">Code</a>
-      <a href="https://github.com/vidit-16/mentat/blob/main/EXPERIMENT_LOG.md">Experiment log</a>
-      <a href="https://github.com/vidit-16/mentat/blob/main/models/MODEL_CARD.md">Model card</a>
-    </p>
+<footer class="end">
+  <canvas id="horizon" aria-hidden="true"></canvas>
+  <div class="end-in">
+    <p class="end-line">It counts. It does not obey.</p>
+    <div class="end-side">
+      <p class="end-links">
+        <a href="log.html">Experiment log</a>
+        <a href="model-card.html">Model card</a>
+      </p>
+      <p class="end-small">&copy; 2026 <a href="https://www.linkedin.com/in/vidit-choudhary">Vidit Choudhary</a></p>
+    </div>
   </div>
-  <p class="foot-small">2026 · Vidit Choudhary · Conversations from ABCD (ASAPP, MIT licence) · 2,377 of 2,377 browser answers match the Python service</p>
 </footer>
 
-<script type="module" src="js/main.js"></script>
+<script type="module" src="js/main.js?v=12"></script>
 </body>
 </html>

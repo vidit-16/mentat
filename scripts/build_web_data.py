@@ -8,6 +8,7 @@ pack) and the reference data. Nothing is typed in by hand except the choice of e
 """
 from __future__ import annotations
 
+import gzip
 import json
 import sys
 import unicodedata
@@ -88,8 +89,8 @@ def main() -> int:
     manifest = json.loads((ROOT / "results" / "manifest.json").read_text(encoding="utf-8"))
     ex = gold[SHOWCASE_ID]
     site = {
-        "claimed": manifest["claimed"],
-        "submitted_run": manifest["submitted_run"],
+        "results": manifest["claimed"],
+        "run": manifest["submitted_run"],
         "routing": routing,
         "hostile": hostile,
         "showcase": {"id": ex["id"], "context": ex["context"], "turn_index": ex.get("turn_index"),
@@ -100,6 +101,22 @@ def main() -> int:
     }
     out = ROOT / "web" / "data"
     out.mkdir(parents=True, exist_ok=True)
+
+    # Every dev and noisy conversation, as a client sends it, plus the gold labels, so the
+    # page can re-run the model on all of them (rulebook, Hinglish time machine, click a grain).
+    convos = []
+    for name in ("dev.jsonl", "dev_noisy.jsonl"):
+        for r in jl(ROOT / "reference" / name):
+            row = {"id": r["id"], "context": [{"speaker": t["speaker"], "text": t["text"]} for t in r["context"]],
+                   "intent": r["intent"], "action": r["action"], "noise": r.get("noise_kind"),
+                   "permitted": r.get("permitted_actions", [])}
+            if "turn_index" in r:
+                row["turn_index"] = r["turn_index"]
+            convos.append(row)
+    (out / "convos.json.gz").write_bytes(gzip.compress(json.dumps(convos, separators=(",", ":")).encode("utf-8"),
+                                                       compresslevel=9, mtime=0))
+    order = [c["id"] for c in convos]
+    assert order == [p["id"] for p in rows], "routing rows and conversations must share one order"
     (out / "site.json").write_text(json.dumps(site, separators=(",", ":")) + "\n",
                                    encoding="utf-8", newline="\n")
     print(len(routing["mentat"]), "routing rows,", len(routing["baseline"]), "baseline,",

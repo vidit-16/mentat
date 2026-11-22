@@ -1,5 +1,5 @@
 // Port of src/triage/features.py.
-import { parseEvent } from "./text.js";
+import { parseEvent } from "./text.js?v=12";
 
 const TOKEN = /<[\p{L}\p{N}_]+>|[\p{L}\p{N}_]+(?:'[\p{L}\p{N}_]+)?/gu;
 const SPK = { customer: "c", agent: "a", action: "x" };
